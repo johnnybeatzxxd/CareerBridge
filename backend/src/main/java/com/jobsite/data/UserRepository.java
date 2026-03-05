@@ -9,6 +9,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserRepository {
     public User create(String name, String email, String password, String role, String companyName, String companyEmail) throws SQLException {
@@ -53,6 +55,49 @@ public class UserRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 return resultSet.next() ? Optional.of(map(resultSet)) : Optional.empty();
             }
+        }
+    }
+
+    public List<User> all() throws SQLException {
+        List<User> users = new ArrayList<>();
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("select * from users order by created_at desc");
+             ResultSet resultSet = statement.executeQuery()) {
+            while (resultSet.next()) {
+                users.add(map(resultSet));
+            }
+        }
+        return users;
+    }
+
+    public User update(long id, String name, String companyName, String companyEmail) throws SQLException {
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("""
+                     update users set name = ?, company_name = ?, company_email = ? where id = ?
+                     """)) {
+            statement.setString(1, name);
+            statement.setString(2, companyName);
+            statement.setString(3, companyEmail);
+            statement.setLong(4, id);
+            statement.executeUpdate();
+            return findById(id).orElseThrow();
+        }
+    }
+
+    public void setActive(long id, boolean active) throws SQLException {
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("update users set active = ? where id = ?")) {
+            statement.setBoolean(1, active);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        }
+    }
+
+    public void approveEmployer(long id) throws SQLException {
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("update users set approved = true where id = ? and role = 'EMPLOYER'")) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
         }
     }
 

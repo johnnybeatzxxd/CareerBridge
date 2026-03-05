@@ -53,6 +53,67 @@ public final class Database {
                         current_timestamp
                     )
                     """.formatted(Passwords.hash("admin123")));
+
+            statement.execute("""
+                    create table if not exists jobs (
+                        id identity primary key,
+                        employer_id bigint not null references users(id),
+                        title varchar(180) not null,
+                        location varchar(160) not null,
+                        job_type varchar(40) not null,
+                        salary varchar(80),
+                        description clob not null,
+                        requirements clob,
+                        status varchar(30) not null default 'OPEN',
+                        created_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
+                    create table if not exists applications (
+                        id identity primary key,
+                        job_id bigint not null references jobs(id) on delete cascade,
+                        seeker_id bigint not null references users(id),
+                        cover_letter clob,
+                        status varchar(30) not null default 'SUBMITTED',
+                        created_at timestamp not null default current_timestamp,
+                        unique(job_id, seeker_id)
+                    )
+                    """);
+
+            statement.execute("""
+                    create table if not exists cv_profiles (
+                        seeker_id bigint primary key references users(id) on delete cascade,
+                        headline varchar(180),
+                        summary clob,
+                        skills clob,
+                        experience clob,
+                        education clob,
+                        file_name varchar(255),
+                        file_path varchar(500),
+                        updated_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
+                    create table if not exists cv_templates (
+                        id identity primary key,
+                        name varchar(120) not null,
+                        body clob not null,
+                        active boolean not null default true,
+                        created_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
+                    merge into cv_templates key(id) values (
+                        1,
+                        'Professional',
+                        'Name: {{name}}\\nHeadline: {{headline}}\\nSummary: {{summary}}\\nSkills: {{skills}}\\nExperience: {{experience}}\\nEducation: {{education}}',
+                        true,
+                        current_timestamp
+                    )
+                    """);
         } catch (SQLException exception) {
             throw new IllegalStateException("Unable to initialize database", exception);
         }

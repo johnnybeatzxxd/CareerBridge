@@ -32,4 +32,16 @@ public final class Api {
         String path = request.getPathInfo();
         return path == null ? "/" : path;
     }
+
+    public static long userId(HttpServletRequest request) {
+        return (long) request.getAttribute("userId");
+    }
+
+    public static String role(HttpServletRequest request) {
+        return (String) request.getAttribute("role");
+    }
+
+    public static boolean hasRole(HttpServletRequest request, String role) {
+        return role.equals(role(request));
+    }
 }

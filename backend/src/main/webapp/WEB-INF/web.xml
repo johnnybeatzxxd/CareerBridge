@@ -44,4 +44,58 @@
         <servlet-name>HealthServlet</servlet-name>
         <url-pattern>/api/health</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AccountServlet</servlet-name>
+        <servlet-class>com.jobsite.web.AccountServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AccountServlet</servlet-name>
+        <url-pattern>/api/account</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JobServlet</servlet-name>
+        <servlet-class>com.jobsite.web.JobServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JobServlet</servlet-name>
+        <url-pattern>/api/jobs/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ApplicationServlet</servlet-name>
+        <servlet-class>com.jobsite.web.ApplicationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ApplicationServlet</servlet-name>
+        <url-pattern>/api/applications/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>CvServlet</servlet-name>
+        <servlet-class>com.jobsite.web.CvServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CvServlet</servlet-name>
+        <url-pattern>/api/cv/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.jobsite.web.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/api/dashboard</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>com.jobsite.web.AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/api/admin/*</url-pattern>
+    </servlet-mapping>
 </web-app>
