@@ -17,8 +17,8 @@ npm-debug.log*
 # Environment and local runtime data
 .env
 .env.local
-data/
-uploads/
+/data/
+/uploads/
 
 # IDE
 .idea/
