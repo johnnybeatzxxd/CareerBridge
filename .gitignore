@@ -1,0 +1,26 @@
+.DS_Store
+Thumbs.db
+
+# Java
+target/
+*.class
+*.war
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Node
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+
+# Environment and local runtime data
+.env
+.env.local
+data/
+uploads/
+
+# IDE
+.idea/
+.vscode/
+*.iml
