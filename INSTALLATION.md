@@ -134,3 +134,43 @@ Clean build files:
 cd backend
 mvn clean
 ```
+
+## 7. Run the Frontend
+
+Install Node.js 20 or newer. On Windows:
+
+```powershell
+winget install OpenJS.NodeJS.LTS
+```
+
+Close and reopen PowerShell, then check Node:
+
+```powershell
+node -v
+npm -v
+```
+
+Install frontend dependencies:
+
+```bash
+cd frontend
+npm install
+```
+
+Run the React app:
+
+```bash
+npm run dev
+```
+
+The frontend will start at:
+
+```text
+http://localhost:5173
+```
+
+Build the frontend:
+
+```bash
+npm run build
+```
