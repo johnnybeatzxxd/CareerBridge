@@ -1,6 +1,7 @@
 package com.jobsite.web;
 
 import com.jobsite.data.ApplicationRepository;
+import com.jobsite.data.JobAlertRepository;
 import com.jobsite.data.JobRepository;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import java.util.Map;
 public class DashboardServlet extends HttpServlet {
     private final ApplicationRepository applications = new ApplicationRepository();
     private final JobRepository jobs = new JobRepository();
+    private final JobAlertRepository alerts = new JobAlertRepository();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -20,7 +22,7 @@ public class DashboardServlet extends HttpServlet {
             if (Api.hasRole(request, "JOB_SEEKER")) {
                 Api.json(response, HttpServletResponse.SC_OK, Map.of(
                         "applications", applications.countForSeeker(Api.userId(request)),
-                        "savedSearches", 0
+                        "jobAlerts", alerts.countForSeeker(Api.userId(request))
                 ));
             } else if (Api.hasRole(request, "EMPLOYER")) {
                 Api.json(response, HttpServletResponse.SC_OK, Map.of(

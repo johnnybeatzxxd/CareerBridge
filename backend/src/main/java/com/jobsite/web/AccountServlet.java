@@ -26,7 +26,7 @@ public class AccountServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             User body = Api.read(request, User.class);
-            User user = users.update(Api.userId(request), body.name, body.companyName, body.companyEmail);
+            User user = users.update(Api.userId(request), body.name, body.email, null, body.companyName, body.companyEmail, null, null);
             Api.json(response, HttpServletResponse.SC_OK, user);
         } catch (SQLException exception) {
             Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Unable to update account");

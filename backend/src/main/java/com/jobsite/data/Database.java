@@ -96,6 +96,18 @@ public final class Database {
                     """);
 
             statement.execute("""
+                    create table if not exists job_alerts (
+                        id identity primary key,
+                        seeker_id bigint not null references users(id) on delete cascade,
+                        keyword varchar(180),
+                        location varchar(160),
+                        job_type varchar(40),
+                        active boolean not null default true,
+                        created_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
                     create table if not exists cv_templates (
                         id identity primary key,
                         name varchar(120) not null,

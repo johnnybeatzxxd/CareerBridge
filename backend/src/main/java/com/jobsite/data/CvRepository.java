@@ -90,6 +90,14 @@ public class CvRepository {
         return templates;
     }
 
+    public void delete(long seekerId) throws SQLException {
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("delete from cv_profiles where seeker_id = ?")) {
+            statement.setLong(1, seekerId);
+            statement.executeUpdate();
+        }
+    }
+
     public void saveTemplate(String name, String body) throws SQLException {
         try (Connection connection = Database.connection();
              PreparedStatement statement = connection.prepareStatement("insert into cv_templates (name, body) values (?, ?)")) {

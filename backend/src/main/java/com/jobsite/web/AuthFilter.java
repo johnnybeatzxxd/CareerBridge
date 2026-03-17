@@ -16,8 +16,10 @@ import java.util.Set;
 public class AuthFilter implements Filter {
     private static final Set<String> PUBLIC_PATHS = Set.of(
             "/api/health",
+            "/api/public/landing",
             "/api/auth/login",
             "/api/auth/register",
+            "/api/auth/logout",
             "/api/jobs"
     );
 

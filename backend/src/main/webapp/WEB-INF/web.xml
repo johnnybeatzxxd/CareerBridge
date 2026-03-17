@@ -46,6 +46,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>PublicServlet</servlet-name>
+        <servlet-class>com.jobsite.web.PublicServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PublicServlet</servlet-name>
+        <url-pattern>/api/public/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>AccountServlet</servlet-name>
         <servlet-class>com.jobsite.web.AccountServlet</servlet-class>
     </servlet>
@@ -70,6 +79,15 @@
     <servlet-mapping>
         <servlet-name>ApplicationServlet</servlet-name>
         <url-pattern>/api/applications/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>JobAlertServlet</servlet-name>
+        <servlet-class>com.jobsite.web.JobAlertServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>JobAlertServlet</servlet-name>
+        <url-pattern>/api/job-alerts/*</url-pattern>
     </servlet-mapping>
 
     <servlet>

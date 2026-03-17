@@ -20,6 +20,7 @@ public class AuthServlet extends HttpServlet {
             switch (Api.path(request)) {
                 case "/register" -> register(request, response);
                 case "/login" -> login(request, response);
+                case "/logout" -> Api.json(response, HttpServletResponse.SC_OK, Map.of("loggedOut", true));
                 default -> Api.error(response, HttpServletResponse.SC_NOT_FOUND, "Unknown auth route");
             }
         } catch (SQLException exception) {
