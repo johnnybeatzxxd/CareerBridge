@@ -19,8 +19,7 @@ public class AuthFilter implements Filter {
             "/api/public/landing",
             "/api/auth/login",
             "/api/auth/register",
-            "/api/auth/logout",
-            "/api/jobs"
+            "/api/auth/logout"
     );
 
     @Override
@@ -28,6 +27,11 @@ public class AuthFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String uri = httpRequest.getRequestURI();
+        if ("GET".equalsIgnoreCase(httpRequest.getMethod()) && uri.startsWith("/api/jobs")) {
+            applyOptionalAuthentication(httpRequest);
+            chain.doFilter(request, response);
+            return;
+        }
         if (isPublic(httpRequest, uri)) {
             chain.doFilter(request, response);
             return;
@@ -48,9 +52,20 @@ public class AuthFilter implements Filter {
     }
 
     private boolean isPublic(HttpServletRequest request, String uri) {
-        if ("GET".equalsIgnoreCase(request.getMethod()) && uri.startsWith("/api/jobs")) {
-            return true;
-        }
         return PUBLIC_PATHS.contains(uri);
+    }
+
+    private void applyOptionalAuthentication(HttpServletRequest request) {
+        String header = request.getHeader("Authorization");
+        if (header == null || !header.startsWith("Bearer ")) {
+            return;
+        }
+        try {
+            Map<String, Object> claims = Jwt.verify(header.substring("Bearer ".length()));
+            request.setAttribute("userId", ((Number) claims.get("sub")).longValue());
+            request.setAttribute("role", claims.get("role").toString());
+        } catch (IllegalArgumentException ignored) {
+            // Public job browsing still works when an optional token is invalid.
+        }
     }
 }
