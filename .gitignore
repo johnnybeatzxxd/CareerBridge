@@ -19,6 +19,8 @@ npm-debug.log*
 .env.local
 /data/
 /uploads/
+backend/data/
+backend/uploads/
 
 # IDE
 .idea/
