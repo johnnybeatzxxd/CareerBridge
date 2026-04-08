@@ -1,7 +1,10 @@
 import { BriefcaseBusiness } from 'lucide-react';
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { useAuth } from '../../features/auth/index.js';
 
 export default function PublicHeader() {
+  const { user, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-[#f7f8f6]">
       <header className="sticky top-0 z-40 border-b border-[#dfe4e0] bg-white/95 backdrop-blur">
@@ -19,18 +22,37 @@ export default function PublicHeader() {
           </nav>
 
           <div className="flex items-center gap-2">
-            <Link
-              className="hidden min-h-10 items-center px-4 text-sm font-bold text-[#405049] hover:text-[#176b52] sm:inline-flex"
-              to="/login"
-            >
-              Sign in
-            </Link>
-            <Link
-              className="inline-flex min-h-10 items-center bg-[#176b52] px-4 text-sm font-bold text-white transition-colors hover:bg-[#115740]"
-              to="/register"
-            >
-              Join CareerBridge
-            </Link>
+            {user ? (
+              <>
+                <Link
+                  className="inline-flex min-h-10 items-center px-4 text-sm font-bold text-[#405049] hover:text-[#176b52]"
+                  to="/dashboard"
+                >
+                  {user.name}
+                </Link>
+                <button
+                  className="inline-flex min-h-10 items-center bg-[#172a23] px-4 text-sm font-bold text-white hover:bg-[#263c33]"
+                  onClick={logout}
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link
+                  className="hidden min-h-10 items-center px-4 text-sm font-bold text-[#405049] hover:text-[#176b52] sm:inline-flex"
+                  to="/login"
+                >
+                  Sign in
+                </Link>
+                <Link
+                  className="inline-flex min-h-10 items-center bg-[#176b52] px-4 text-sm font-bold text-white transition-colors hover:bg-[#115740]"
+                  to="/register"
+                >
+                  Join CareerBridge
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
