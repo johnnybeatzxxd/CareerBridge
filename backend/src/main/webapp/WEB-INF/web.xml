@@ -82,6 +82,24 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>PaymentServlet</servlet-name>
+        <servlet-class>com.jobsite.web.PaymentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PaymentServlet</servlet-name>
+        <url-pattern>/api/payments/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>WalletServlet</servlet-name>
+        <servlet-class>com.jobsite.web.WalletServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>WalletServlet</servlet-name>
+        <url-pattern>/api/wallet/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>JobAlertServlet</servlet-name>
         <servlet-class>com.jobsite.web.JobAlertServlet</servlet-class>
     </servlet>

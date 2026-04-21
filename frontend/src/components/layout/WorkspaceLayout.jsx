@@ -8,6 +8,7 @@ import {
   Settings,
   ShieldCheck,
   Users,
+  WalletCards,
 } from 'lucide-react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Avatar } from '../ui/index.js';
@@ -18,6 +19,7 @@ const roleNavigation = {
     { to: '/dashboard', label: 'Overview', icon: LayoutDashboard },
     { to: '/jobs', label: 'Find jobs', icon: Search },
     { to: '/applications', label: 'Applications', icon: BriefcaseBusiness },
+    { to: '/wallet', label: 'Wallet', icon: WalletCards },
     { to: '/resume', label: 'Resume', icon: FileText },
     { to: '/alerts', label: 'Job alerts', icon: Bell },
   ],
@@ -35,6 +37,7 @@ const roleNavigation = {
 const routeTitles = {
   '/dashboard': 'Overview',
   '/applications': 'Applications',
+  '/wallet': 'Wallet',
   '/resume': 'Resume',
   '/alerts': 'Job alerts',
   '/employer/jobs': 'Job posts',

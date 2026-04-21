@@ -7,7 +7,9 @@ import {
   ShieldCheck,
   UserRound,
   Users,
+  WalletCards,
 } from 'lucide-react';
+import { formatMoney } from '../wallet/walletUtils.js';
 
 export const dashboardConfig = {
   JOB_SEEKER: {
@@ -17,6 +19,7 @@ export const dashboardConfig = {
       return [
         { label: 'Applications', value: data?.applications || 0, icon: Send },
         { label: 'Active alerts', value: data?.jobAlerts || 0, icon: Bell },
+        { label: 'Wallet balance', value: formatMoney(data?.balance), icon: WalletCards },
         { label: 'Profile status', value: 'Ready', icon: UserRound },
       ];
     },
@@ -24,6 +27,7 @@ export const dashboardConfig = {
       { label: 'Explore jobs', description: 'Browse open opportunities', to: '/jobs', icon: Search },
       { label: 'Update resume', description: 'Keep your profile application-ready', to: '/resume', icon: FileText },
       { label: 'Manage alerts', description: 'Review saved job searches', to: '/alerts', icon: Bell },
+      { label: 'Open wallet', description: 'Review earnings and withdraw funds', to: '/wallet', icon: WalletCards },
     ],
   },
   EMPLOYER: {

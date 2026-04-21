@@ -2,6 +2,7 @@ export const applicationStatuses = [
   { value: 'SUBMITTED', label: 'Submitted' },
   { value: 'REVIEWING', label: 'Reviewing' },
   { value: 'SHORTLISTED', label: 'Shortlisted' },
+  { value: 'HIRED', label: 'Hired' },
   { value: 'REJECTED', label: 'Rejected' },
 ];
 
@@ -17,7 +18,7 @@ export function formatApplicationDate(value) {
 }
 
 export function statusVariant(status) {
-  if (status === 'SHORTLISTED') return 'success';
+  if (status === 'SHORTLISTED' || status === 'HIRED') return 'success';
   if (status === 'REJECTED') return 'danger';
   if (status === 'REVIEWING') return 'info';
   return 'warning';

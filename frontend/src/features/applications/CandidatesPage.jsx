@@ -1,4 +1,4 @@
-import { Eye, Search, Users } from 'lucide-react';
+import { Banknote, Eye, Search, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Navigate, useSearchParams } from 'react-router-dom';
 import {
@@ -19,6 +19,8 @@ import {
   Skeleton,
 } from '../../components/ui/index.js';
 import { useAuth } from '../auth/index.js';
+import { PayCandidateDialog } from '../payments/index.js';
+import { formatMoney } from '../wallet/walletUtils.js';
 import ApplicationDetailsDialog from './ApplicationDetailsDialog.jsx';
 import {
   applicationStatuses,
@@ -30,8 +32,9 @@ import { useApplications } from './useApplications.js';
 
 export default function CandidatesPage() {
   const { user } = useAuth();
-  const { applications, loading, error, updateStatus } = useApplications();
+  const { applications, loading, error, reload, updateStatus } = useApplications();
   const [selected, setSelected] = useState(null);
+  const [paying, setPaying] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
@@ -112,6 +115,7 @@ export default function CandidatesPage() {
               <DataTableHead>Candidate</DataTableHead>
               <DataTableHead>Position</DataTableHead>
               <DataTableHead>Applied</DataTableHead>
+              <DataTableHead>Paid</DataTableHead>
               <DataTableHead>Status</DataTableHead>
               <DataTableHead align="right">Details</DataTableHead>
             </DataTableRow>
@@ -133,6 +137,7 @@ export default function CandidatesPage() {
                   {application.coverLetter && <p className="mt-1 max-w-xs truncate text-xs text-[#7a8580]">{application.coverLetter}</p>}
                 </DataTableCell>
                 <DataTableCell>{formatApplicationDate(application.createdAt)}</DataTableCell>
+                <DataTableCell className="font-bold text-[#176b52]">{formatMoney(application.totalPaid)}</DataTableCell>
                 <DataTableCell>
                   <Select
                     aria-label={`Status for ${application.seekerName}`}
@@ -144,9 +149,16 @@ export default function CandidatesPage() {
                   />
                 </DataTableCell>
                 <DataTableCell align="right">
-                  <IconButton label={`View ${application.seekerName}'s application`} onClick={() => setSelected(application)}>
-                    <Eye size={16} />
-                  </IconButton>
+                  <div className="flex justify-end gap-1">
+                    {application.status === 'HIRED' && (
+                      <IconButton label={`Pay ${application.seekerName}`} onClick={() => setPaying(application)}>
+                        <Banknote size={16} />
+                      </IconButton>
+                    )}
+                    <IconButton label={`View ${application.seekerName}'s application`} onClick={() => setSelected(application)}>
+                      <Eye size={16} />
+                    </IconButton>
+                  </div>
                 </DataTableCell>
               </DataTableRow>
             ))}
@@ -167,6 +179,7 @@ export default function CandidatesPage() {
         employerView
         onClose={() => setSelected(null)}
       />
+      <PayCandidateDialog application={paying} onClose={() => setPaying(null)} onPaid={reload} />
     </div>
   );
 }

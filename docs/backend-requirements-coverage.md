@@ -18,6 +18,8 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - View landing page data: `GET /api/public/landing`
 - Get job alert: `GET /api/job-alerts`, `POST /api/job-alerts`, `PUT /api/job-alerts/{id}`, `DELETE /api/job-alerts/{id}`
 - View applied jobs: `GET /api/applications`
+- View wallet balance and transactions: `GET /api/wallet`
+- Withdraw available funds: `POST /api/wallet/withdrawals`
 
 ## Employer
 
@@ -28,6 +30,9 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - View dashboard: `GET /api/dashboard`
 - View applications: `GET /api/applications`
 - Update application status: `PATCH /api/applications/{id}`
+- Hire a candidate: `PATCH /api/applications/{id}` with status `HIRED`
+- Pay a hired candidate: `POST /api/payments`
+- View payment history: `GET /api/payments`
 
 ## Admin
 
@@ -35,3 +40,14 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - Prepare CV template: `GET /api/admin/cv-templates`, `POST /api/admin/cv-templates`
 - Manage users CRUD: `GET /api/admin/users`, `POST /api/admin/users`, `PUT /api/admin/users/{id}`, `DELETE /api/admin/users/{id}`
 - Approve employer: `PATCH /api/admin/users/{id}/approve`
+
+## Extended Hiring And Payment Workflow
+
+The original assignment does not explicitly require payments. CareerBridge extends it with a simulated
+financial workflow:
+
+- Employers can only pay applications that they own and have marked as `HIRED`.
+- Payments immediately credit the hired job seeker's wallet.
+- Wallet balances are calculated from immutable payment and withdrawal records.
+- Withdrawals require a payout method and destination and cannot exceed the available balance.
+- This is a local demonstration ledger. It does not connect to a real bank or payment processor.

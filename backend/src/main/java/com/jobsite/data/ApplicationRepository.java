@@ -30,7 +30,9 @@ public class ApplicationRepository {
 
     public List<Application> findForSeeker(long seekerId) throws SQLException {
         return query("""
-                select a.*, j.title job_title, u.company_name, s.name seeker_name, s.email seeker_email
+                select a.*, j.title job_title, u.company_name, s.name seeker_name, s.email seeker_email,
+                       coalesce((select sum(t.amount) from financial_transactions t
+                                 where t.application_id = a.id and t.type = 'PAYMENT' and t.status = 'COMPLETED'), 0) total_paid
                 from applications a
                 join jobs j on j.id = a.job_id
                 join users u on u.id = j.employer_id
@@ -42,7 +44,9 @@ public class ApplicationRepository {
 
     public List<Application> findForEmployer(long employerId) throws SQLException {
         return query("""
-                select a.*, j.title job_title, u.company_name, s.name seeker_name, s.email seeker_email
+                select a.*, j.title job_title, u.company_name, s.name seeker_name, s.email seeker_email,
+                       coalesce((select sum(t.amount) from financial_transactions t
+                                 where t.application_id = a.id and t.type = 'PAYMENT' and t.status = 'COMPLETED'), 0) total_paid
                 from applications a
                 join jobs j on j.id = a.job_id
                 join users u on u.id = j.employer_id
@@ -53,6 +57,9 @@ public class ApplicationRepository {
     }
 
     public void updateStatus(long id, long employerId, String status) throws SQLException {
+        if (!List.of("SUBMITTED", "REVIEWING", "SHORTLISTED", "REJECTED", "HIRED").contains(status)) {
+            throw new SQLException("Invalid application status");
+        }
         try (Connection connection = Database.connection();
              PreparedStatement statement = connection.prepareStatement("""
                      update applications set status = ?
@@ -61,7 +68,9 @@ public class ApplicationRepository {
             statement.setString(1, status);
             statement.setLong(2, id);
             statement.setLong(3, employerId);
-            statement.executeUpdate();
+            if (statement.executeUpdate() == 0) {
+                throw new SQLException("Application not found");
+            }
         }
     }
 
@@ -107,6 +116,7 @@ public class ApplicationRepository {
         application.companyName = resultSet.getString("company_name");
         application.coverLetter = resultSet.getString("cover_letter");
         application.status = resultSet.getString("status");
+        application.totalPaid = resultSet.getBigDecimal("total_paid");
         application.createdAt = String.valueOf(resultSet.getTimestamp("created_at"));
         return application;
     }

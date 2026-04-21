@@ -23,6 +23,7 @@ docs/        Assignment notes
 - Job seeker registration, login, account management, dashboard, job search, applications, CV upload/build/download
 - Employer registration, login, account management, dashboard, job posting, job management, application review
 - Admin dashboard, user management, employer approval, CV template preparation
+- Candidate hiring, simulated employer payments, seeker wallet balances, and withdrawals
 
 ## Local Development
 
