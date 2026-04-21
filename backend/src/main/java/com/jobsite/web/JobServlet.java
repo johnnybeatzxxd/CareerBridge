@@ -1,9 +1,7 @@
 package com.jobsite.web;
 
 import com.jobsite.data.JobRepository;
-import com.jobsite.data.UserRepository;
 import com.jobsite.model.Job;
-import com.jobsite.model.User;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,7 +12,6 @@ import java.util.Map;
 
 public class JobServlet extends HttpServlet {
     private final JobRepository jobs = new JobRepository();
-    private final UserRepository users = new UserRepository();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -46,11 +43,6 @@ public class JobServlet extends HttpServlet {
             return;
         }
         try {
-            User employer = users.findById(Api.userId(request)).orElseThrow();
-            if (!employer.approved) {
-                Api.error(response, HttpServletResponse.SC_FORBIDDEN, "Employer must be approved by admin before posting jobs");
-                return;
-            }
             Job job = jobs.create(Api.userId(request), Api.read(request, Job.class));
             Api.json(response, HttpServletResponse.SC_CREATED, job);
         } catch (SQLException exception) {

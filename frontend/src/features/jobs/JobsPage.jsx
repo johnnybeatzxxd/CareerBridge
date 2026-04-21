@@ -49,7 +49,7 @@ export default function JobsPage() {
           <p className="text-xs font-bold uppercase text-[#8fd2b9]">CareerBridge marketplace</p>
           <h1 className="mt-3 text-4xl font-semibold">Find your next opportunity.</h1>
           <p className="mt-3 max-w-2xl text-base text-[#c7d4ce]">
-            Explore approved employers and review every role on its own dedicated page.
+            Explore open opportunities and review every role on its own dedicated page.
           </p>
         </div>
       </section>
@@ -97,7 +97,7 @@ export default function JobsPage() {
               <p className="text-sm font-bold text-[#17211e]">
                 {loading ? 'Loading opportunities...' : `${jobs.length} ${jobs.length === 1 ? 'opportunity' : 'opportunities'}`}
               </p>
-              <p className="mt-1 text-xs text-[#74807a]">Approved employers · newest first</p>
+              <p className="mt-1 text-xs text-[#74807a]">Open opportunities · newest first</p>
             </div>
           </div>
 

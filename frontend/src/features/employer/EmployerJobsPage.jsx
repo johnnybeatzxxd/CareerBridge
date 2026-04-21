@@ -48,8 +48,7 @@ export default function EmployerJobsPage() {
   }
 
   return <div className="space-y-6">
-    <PageHeader eyebrow="Employer workspace" title="Job posts" subtitle="Create opportunities, control publishing status, and open each role’s candidate pipeline." actions={<Button disabled={!user.approved} onClick={openCreate}><Plus size={16} />Create job</Button>} />
-    {!user.approved && <div className="border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">Your employer account must be approved before publishing jobs.</div>}
+    <PageHeader eyebrow="Employer workspace" title="Job posts" subtitle="Create opportunities, control publishing status, and open each role’s candidate pipeline." actions={<Button onClick={openCreate}><Plus size={16} />Create job</Button>} />
     {(error || actionError) && <div className="border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error || actionError}</div>}
     {notice && <div className="border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-700">{notice}</div>}
     {loading ? <div className="border bg-white p-5">{[1,2,3].map(i=><Skeleton className="mb-3 h-16" key={i}/>)}</div> : jobs.length ? (
@@ -63,7 +62,7 @@ export default function EmployerJobsPage() {
           <DataTableCell align="right"><div className="flex justify-end gap-1"><Link className="inline-grid h-10 w-10 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50" title="View public job" to={`/jobs/${job.id}`}><Eye size={16}/></Link><IconButton label={`Edit ${job.title}`} onClick={()=>openEdit(job)}><Pencil size={16}/></IconButton><IconButton label={`${job.status === 'OPEN' ? 'Close' : 'Reopen'} ${job.title}`} loading={busy} onClick={()=>toggle(job)}><Power size={16}/></IconButton><IconButton label={`Delete ${job.title}`} variant="danger" onClick={()=>setDeleting(job)}><Trash2 size={16}/></IconButton></div></DataTableCell>
         </DataTableRow>)}</DataTableBody>
       </DataTable>
-    ) : <div className="border border-[#d8dfda] bg-white"><EmptyState title="No job posts yet" description="Create your first opportunity to begin receiving applications." action={<Button disabled={!user.approved} onClick={openCreate}><Plus size={16}/>Create job</Button>}/></div>}
+    ) : <div className="border border-[#d8dfda] bg-white"><EmptyState title="No job posts yet" description="Create your first opportunity to begin receiving applications." action={<Button onClick={openCreate}><Plus size={16}/>Create job</Button>}/></div>}
     <JobFormDialog job={editing} open={formOpen} saving={busy} onClose={()=>setFormOpen(false)} onSave={saveJob}/>
     <DeleteJobDialog job={deleting} deleting={busy} onClose={()=>setDeleting(null)} onConfirm={deleteJob}/>
   </div>;

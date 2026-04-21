@@ -36,12 +36,6 @@ export default function DashboardPage() {
         }
       />
 
-      {user.role === 'EMPLOYER' && !user.approved && (
-        <div className="border border-amber-200 bg-amber-50 p-4 text-sm text-amber-800">
-          Your employer account is awaiting approval. Job publishing will unlock after an administrator approves the company.
-        </div>
-      )}
-
       {error && <div className="border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error}</div>}
 
       <section className={`grid gap-4 ${stats.length === 4 ? 'xl:grid-cols-4' : 'xl:grid-cols-3'}`}>

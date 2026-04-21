@@ -37,7 +37,7 @@ public class JobRepository {
                 """);
         List<Object> params = new ArrayList<>();
         if (employerId == null) {
-            sql.append(" and j.status = 'OPEN' and u.approved = true and u.active = true");
+            sql.append(" and j.status = 'OPEN' and u.active = true");
         } else {
             sql.append(" and j.employer_id = ?");
             params.add(employerId);

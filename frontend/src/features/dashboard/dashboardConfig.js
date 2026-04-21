@@ -21,7 +21,7 @@ export const dashboardConfig = {
       ];
     },
     actions: [
-      { label: 'Explore jobs', description: 'Browse approved opportunities', to: '/jobs', icon: Search },
+      { label: 'Explore jobs', description: 'Browse open opportunities', to: '/jobs', icon: Search },
       { label: 'Update resume', description: 'Keep your profile application-ready', to: '/resume', icon: FileText },
       { label: 'Manage alerts', description: 'Review saved job searches', to: '/alerts', icon: Bell },
     ],
@@ -29,11 +29,11 @@ export const dashboardConfig = {
   EMPLOYER: {
     eyebrow: 'Employer workspace',
     subtitle: 'Monitor your active roles and the candidates interested in your company.',
-    stats(data, user) {
+    stats(data) {
       return [
         { label: 'Job posts', value: data?.jobs || 0, icon: BriefcaseBusiness },
         { label: 'Applications', value: data?.applications || 0, icon: Users },
-        { label: 'Company status', value: user?.approved ? 'Approved' : 'Pending', icon: ShieldCheck },
+        { label: 'Publishing', value: 'Enabled', icon: ShieldCheck },
       ];
     },
     actions: [

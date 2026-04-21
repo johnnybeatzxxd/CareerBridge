@@ -88,7 +88,7 @@ export default function JobDetailsPage() {
                   <ShieldCheck className="mt-0.5 shrink-0 text-[#176b52]" size={21} />
                   <div>
                     <p className="font-bold text-[#17211e]">{companyName(job)}</p>
-                    <p className="mt-1 text-sm leading-6 text-[#68736e]">Approved employer on CareerBridge.</p>
+                    <p className="mt-1 text-sm leading-6 text-[#68736e]">Employer account on CareerBridge.</p>
                     <p className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-[#405049]">
                       <Mail size={16} />
                       {job.companyEmail || 'Contact email not provided'}

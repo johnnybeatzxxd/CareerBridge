@@ -26,7 +26,7 @@ public class UserRepository {
             statement.setString(4, role);
             statement.setString(5, companyName);
             statement.setString(6, companyEmail);
-            statement.setBoolean(7, !"EMPLOYER".equals(role));
+            statement.setBoolean(7, true);
             statement.executeUpdate();
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 keys.next();

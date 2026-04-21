@@ -136,12 +136,6 @@ export default function RegisterPage() {
           />
         </FormField>
 
-        {form.role === 'EMPLOYER' && (
-          <div className="border border-amber-200 bg-amber-50 px-4 py-3 text-xs leading-5 text-amber-800">
-            Employer accounts require administrator approval before publishing jobs.
-          </div>
-        )}
-
         <Button className="w-full" size="lg" type="submit" loading={submitting} loadingText="Creating account...">
           Create account
         </Button>
