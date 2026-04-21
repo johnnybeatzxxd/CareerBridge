@@ -1,6 +1,6 @@
 import { Banknote, Eye, Search, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Navigate, useSearchParams } from 'react-router-dom';
+import { Link, Navigate, useSearchParams } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -21,7 +21,6 @@ import {
 import { useAuth } from '../auth/index.js';
 import { PayCandidateDialog } from '../payments/index.js';
 import { formatMoney } from '../wallet/walletUtils.js';
-import ApplicationDetailsDialog from './ApplicationDetailsDialog.jsx';
 import {
   applicationStatuses,
   formatApplicationDate,
@@ -33,7 +32,6 @@ import { useApplications } from './useApplications.js';
 export default function CandidatesPage() {
   const { user } = useAuth();
   const { applications, loading, error, reload, updateStatus } = useApplications();
-  const [selected, setSelected] = useState(null);
   const [paying, setPaying] = useState(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
@@ -150,14 +148,18 @@ export default function CandidatesPage() {
                 </DataTableCell>
                 <DataTableCell align="right">
                   <div className="flex justify-end gap-1">
-                    {application.status === 'HIRED' && (
+                    {application.status === 'HIRED' && Number(application.totalPaid) === 0 && (
                       <IconButton label={`Pay ${application.seekerName}`} onClick={() => setPaying(application)}>
                         <Banknote size={16} />
                       </IconButton>
                     )}
-                    <IconButton label={`View ${application.seekerName}'s application`} onClick={() => setSelected(application)}>
+                    <Link
+                      className="inline-grid h-10 w-10 place-items-center rounded-md border border-slate-200 bg-white text-slate-600 hover:border-slate-300 hover:bg-slate-50"
+                      title={`View ${application.seekerName}'s profile`}
+                      to={`/employer/candidates/${application.id}`}
+                    >
                       <Eye size={16} />
-                    </IconButton>
+                    </Link>
                   </div>
                 </DataTableCell>
               </DataTableRow>
@@ -174,11 +176,6 @@ export default function CandidatesPage() {
         </div>
       )}
 
-      <ApplicationDetailsDialog
-        application={selected}
-        employerView
-        onClose={() => setSelected(null)}
-      />
       <PayCandidateDialog application={paying} onClose={() => setPaying(null)} onPaid={reload} />
     </div>
   );

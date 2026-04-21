@@ -39,3 +39,15 @@ export function initials(value = '') {
     .join('')
     .toUpperCase() || 'CB';
 }
+
+export function formatJobPrice(job) {
+  const amount = Number(job?.price);
+  if (Number.isFinite(amount) && amount > 0) {
+    return new Intl.NumberFormat('en', {
+      style: 'currency',
+      currency: 'ETB',
+      minimumFractionDigits: 2,
+    }).format(amount);
+  }
+  return job?.salary || 'Price not set';
+}

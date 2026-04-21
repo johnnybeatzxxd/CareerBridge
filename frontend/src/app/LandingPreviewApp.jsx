@@ -8,7 +8,7 @@ import PreviewPlaceholder from '../components/layout/PreviewPlaceholder.jsx';
 import ProtectedRoute from './ProtectedRoute.jsx';
 import WorkspaceLayout from '../components/layout/WorkspaceLayout.jsx';
 import { DashboardPage } from '../features/dashboard/index.js';
-import { ApplicationsPage, CandidatesPage } from '../features/applications/index.js';
+import { ApplicationsPage, CandidateProfilePage, CandidatesPage } from '../features/applications/index.js';
 import { ResumePage } from '../features/resume/index.js';
 import { AlertsPage } from '../features/alerts/index.js';
 import { EmployerJobsPage } from '../features/employer/index.js';
@@ -65,6 +65,7 @@ export default function LandingPreviewApp() {
           <Route path="alerts" element={<AlertsPage />} />
           <Route path="employer/jobs" element={<EmployerJobsPage />} />
           <Route path="employer/candidates" element={<CandidatesPage />} />
+          <Route path="employer/candidates/:applicationId" element={<CandidateProfilePage />} />
           <Route path="admin" element={<PreviewPlaceholder title="Administration workspace" embedded />} />
           <Route path="account" element={<PreviewPlaceholder title="Account settings" embedded />} />
         </Route>

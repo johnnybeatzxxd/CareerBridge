@@ -29,6 +29,8 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - Manage job: `GET /api/jobs?scope=EMPLOYER`, `PUT /api/jobs/{id}`, `DELETE /api/jobs/{id}`
 - View dashboard: `GET /api/dashboard`
 - View applications: `GET /api/applications`
+- View an applicant profile and built resume: `GET /api/applications/{id}/profile`
+- Download an applicant's uploaded resume: `GET /api/applications/{id}/resume-file`
 - Update application status: `PATCH /api/applications/{id}`
 - Hire a candidate: `PATCH /api/applications/{id}` with status `HIRED`
 - Pay a hired candidate: `POST /api/payments`
@@ -47,7 +49,9 @@ The original assignment does not explicitly require payments. CareerBridge exten
 financial workflow:
 
 - Employers can only pay applications that they own and have marked as `HIRED`.
-- Payments immediately credit the hired job seeker's wallet.
+- Each job has a required numeric price. Employers cannot enter or override the amount during payment.
+- Hiring a candidate closes the job and removes it from public search and public job details.
+- A hired application can be paid once, and the exact job price immediately credits the job seeker's wallet.
 - Wallet balances are calculated from immutable payment and withdrawal records.
 - Withdrawals require a payout method and destination and cannot exceed the available balance.
 - This is a local demonstration ledger. It does not connect to a real bank or payment processor.

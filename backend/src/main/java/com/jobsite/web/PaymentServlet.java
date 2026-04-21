@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 
 public class PaymentServlet extends HttpServlet {
@@ -37,7 +36,6 @@ public class PaymentServlet extends HttpServlet {
             FinancialTransaction payment = finances.pay(
                     Api.userId(request),
                     body.applicationId,
-                    body.amount,
                     body.note
             );
             Api.json(response, HttpServletResponse.SC_CREATED, payment);
@@ -48,7 +46,6 @@ public class PaymentServlet extends HttpServlet {
 
     static class PaymentRequest {
         long applicationId;
-        BigDecimal amount;
         String note;
     }
 }

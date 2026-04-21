@@ -13,14 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FinancialRepository {
-    public FinancialTransaction pay(long employerId, long applicationId, BigDecimal amount, String note) throws SQLException {
-        requirePositive(amount);
+    public FinancialTransaction pay(long employerId, long applicationId, String note) throws SQLException {
         try (Connection connection = Database.connection()) {
             connection.setAutoCommit(false);
             try {
                 long seekerId;
+                BigDecimal amount;
                 try (PreparedStatement statement = connection.prepareStatement("""
-                        select a.seeker_id
+                        select a.seeker_id, j.price
                         from applications a join jobs j on j.id = a.job_id
                         where a.id = ? and j.employer_id = ? and a.status = 'HIRED'
                         for update
@@ -32,6 +32,20 @@ public class FinancialRepository {
                             throw new SQLException("Only hired candidates can be paid");
                         }
                         seekerId = resultSet.getLong("seeker_id");
+                        amount = resultSet.getBigDecimal("price");
+                        requirePositive(amount);
+                    }
+                }
+                try (PreparedStatement statement = connection.prepareStatement("""
+                        select count(*) from financial_transactions
+                        where application_id = ? and type = 'PAYMENT' and status = 'COMPLETED'
+                        """)) {
+                    statement.setLong(1, applicationId);
+                    try (ResultSet resultSet = statement.executeQuery()) {
+                        resultSet.next();
+                        if (resultSet.getInt(1) > 0) {
+                            throw new SQLException("This hired application has already been paid");
+                        }
                     }
                 }
 

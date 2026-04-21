@@ -4,10 +4,16 @@ import com.jobsite.security.Passwords;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.math.BigDecimal;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public final class Database {
+    private static final Pattern PRICE_PATTERN = Pattern.compile("(\\d[\\d,]*(?:\\.\\d{1,2})?)");
     private static final String URL = System.getenv().getOrDefault(
             "DB_URL",
             "jdbc:h2:file:./data/jobsite;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE"
@@ -62,12 +68,15 @@ public final class Database {
                         location varchar(160) not null,
                         job_type varchar(40) not null,
                         salary varchar(80),
+                        price numeric(15, 2),
                         description clob not null,
                         requirements clob,
                         status varchar(30) not null default 'OPEN',
                         created_at timestamp not null default current_timestamp
                     )
                     """);
+            statement.execute("alter table jobs add column if not exists price numeric(15, 2)");
+            migrateJobPrices(connection);
 
             statement.execute("""
                     create table if not exists applications (
@@ -95,6 +104,10 @@ public final class Database {
                         status varchar(30) not null default 'COMPLETED',
                         created_at timestamp not null default current_timestamp
                     )
+                    """);
+            statement.execute("""
+                    create unique index if not exists uq_completed_job_payment
+                    on financial_transactions(application_id, type)
                     """);
 
             statement.execute("""
@@ -144,6 +157,38 @@ public final class Database {
                     """);
         } catch (SQLException exception) {
             throw new IllegalStateException("Unable to initialize database", exception);
+        }
+    }
+
+    private static void migrateJobPrices(Connection connection) throws SQLException {
+        try (PreparedStatement select = connection.prepareStatement(
+                "select id, salary from jobs where price is null and salary is not null"
+        ); ResultSet resultSet = select.executeQuery();
+             PreparedStatement update = connection.prepareStatement("update jobs set price = ? where id = ?")) {
+            while (resultSet.next()) {
+                BigDecimal price = parsePrice(resultSet.getString("salary"));
+                if (price != null) {
+                    update.setBigDecimal(1, price);
+                    update.setLong(2, resultSet.getLong("id"));
+                    update.addBatch();
+                }
+            }
+            update.executeBatch();
+        }
+    }
+
+    private static BigDecimal parsePrice(String value) {
+        if (value == null) {
+            return null;
+        }
+        Matcher matcher = PRICE_PATTERN.matcher(value);
+        if (!matcher.find()) {
+            return null;
+        }
+        try {
+            return new BigDecimal(matcher.group(1).replace(",", ""));
+        } catch (NumberFormatException exception) {
+            return null;
         }
     }
 }

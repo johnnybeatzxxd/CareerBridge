@@ -18,6 +18,7 @@ export default function JobFormDialog({ job, open, saving, onClose, onSave }) {
     const nextErrors = {};
     if (!form.title.trim()) nextErrors.title = 'Job title is required';
     if (!form.location.trim()) nextErrors.location = 'Location is required';
+    if (!Number.isFinite(Number(form.price)) || Number(form.price) <= 0) nextErrors.price = 'Enter a job price greater than zero';
     if (!form.description.trim()) nextErrors.description = 'Description is required';
     setErrors(nextErrors);
     if (!Object.keys(nextErrors).length) onSave(form);
@@ -42,8 +43,8 @@ export default function JobFormDialog({ job, open, saving, onClose, onSave }) {
         <FormField label="Job type">
           <Select options={jobTypeOptions} value={form.jobType} onChange={(e) => setForm({ ...form, jobType: e.target.value })} />
         </FormField>
-        <FormField label="Salary" optional>
-          <Input value={form.salary || ''} placeholder="ETB 70,000 - 100,000" onChange={(e) => setForm({ ...form, salary: e.target.value })} />
+        <FormField label="Job price" required error={errors.price} description="This exact amount is paid when the selected candidate is hired.">
+          <Input min="0.01" step="0.01" type="number" value={form.price || ''} placeholder="5000.00" onChange={(e) => setForm({ ...form, price: e.target.value })} />
         </FormField>
         {job?.id && <FormField label="Status"><Select options={jobStatusOptions} value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} /></FormField>}
         <FormField className="sm:col-span-2" label="Description" required error={errors.description}>

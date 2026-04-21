@@ -1,7 +1,7 @@
 import { ArrowUpRight, BriefcaseBusiness, Clock3, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Badge } from '../../components/ui/index.js';
-import { companyName, formatDate, formatJobType, initials } from './jobUtils.js';
+import { companyName, formatDate, formatJobPrice, formatJobType, initials } from './jobUtils.js';
 
 export default function JobCard({ job }) {
   return (
@@ -42,7 +42,7 @@ export default function JobCard({ job }) {
             <div className="mt-5 flex items-center justify-between border-t border-[#e5e9e6] pt-4">
               <div className="flex items-center gap-2">
                 <Badge className="rounded-none bg-[#e7f3ed] text-[#12664f]">{formatJobType(job.jobType)}</Badge>
-                {job.salary && <span className="text-sm font-bold text-[#176b52]">{job.salary}</span>}
+                <span className="text-sm font-bold text-[#176b52]">{formatJobPrice(job)}</span>
               </div>
               <span className="text-sm font-bold text-[#176b52]">View opportunity</span>
             </div>

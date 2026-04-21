@@ -2,7 +2,7 @@ export const emptyJobForm = {
   title: '',
   location: '',
   jobType: 'FULL_TIME',
-  salary: '',
+  price: '',
   description: '',
   requirements: '',
   status: 'OPEN',

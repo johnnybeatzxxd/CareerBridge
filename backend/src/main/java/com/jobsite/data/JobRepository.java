@@ -14,8 +14,8 @@ import java.util.Optional;
 public class JobRepository {
     public Job create(long employerId, Job job) throws SQLException {
         String sql = """
-                insert into jobs (employer_id, title, location, job_type, salary, description, requirements)
-                values (?, ?, ?, ?, ?, ?, ?)
+                insert into jobs (employer_id, title, location, job_type, salary, price, description, requirements)
+                values (?, ?, ?, ?, ?, ?, ?, ?)
                 """;
         try (Connection connection = Database.connection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -31,13 +31,17 @@ public class JobRepository {
     public List<Job> search(String query, String location, String jobType, Long employerId) throws SQLException {
         List<Job> jobs = new ArrayList<>();
         StringBuilder sql = new StringBuilder("""
-                select j.*, u.name employer_name, u.company_name, u.company_email
+                select j.*, u.name employer_name, u.company_name, u.company_email,
+                       exists(select 1 from applications a where a.job_id = j.id and a.status = 'HIRED') filled
                 from jobs j join users u on u.id = j.employer_id
                 where 1 = 1
                 """);
         List<Object> params = new ArrayList<>();
         if (employerId == null) {
-            sql.append(" and j.status = 'OPEN' and u.active = true");
+            sql.append("""
+                     and j.status = 'OPEN' and u.active = true
+                     and not exists(select 1 from applications a where a.job_id = j.id and a.status = 'HIRED')
+                    """);
         } else {
             sql.append(" and j.employer_id = ?");
             params.add(employerId);
@@ -71,7 +75,8 @@ public class JobRepository {
 
     public Optional<Job> findById(long id) throws SQLException {
         String sql = """
-                select j.*, u.name employer_name, u.company_name, u.company_email
+                select j.*, u.name employer_name, u.company_name, u.company_email,
+                       exists(select 1 from applications a where a.job_id = j.id and a.status = 'HIRED') filled
                 from jobs j join users u on u.id = j.employer_id
                 where j.id = ?
                 """;
@@ -87,19 +92,23 @@ public class JobRepository {
         try (Connection connection = Database.connection();
              PreparedStatement statement = connection.prepareStatement("""
                      update jobs
-                     set title = ?, location = ?, job_type = ?, salary = ?, description = ?, requirements = ?, status = ?
+                     set title = ?, location = ?, job_type = ?, salary = ?, price = ?, description = ?, requirements = ?, status = ?
                      where id = ? and employer_id = ?
+                       and not exists(select 1 from applications a where a.job_id = jobs.id and a.status = 'HIRED')
                      """)) {
             statement.setString(1, job.title);
             statement.setString(2, job.location);
             statement.setString(3, job.jobType);
             statement.setString(4, job.salary);
-            statement.setString(5, job.description);
-            statement.setString(6, job.requirements);
-            statement.setString(7, job.status == null ? "OPEN" : job.status);
-            statement.setLong(8, id);
-            statement.setLong(9, employerId);
-            statement.executeUpdate();
+            statement.setBigDecimal(5, job.price);
+            statement.setString(6, job.description);
+            statement.setString(7, job.requirements);
+            statement.setString(8, job.status == null ? "OPEN" : job.status);
+            statement.setLong(9, id);
+            statement.setLong(10, employerId);
+            if (statement.executeUpdate() == 0) {
+                throw new SQLException("Filled jobs cannot be changed");
+            }
         }
     }
 
@@ -118,8 +127,9 @@ public class JobRepository {
         statement.setString(3, job.location);
         statement.setString(4, job.jobType);
         statement.setString(5, job.salary);
-        statement.setString(6, job.description);
-        statement.setString(7, job.requirements);
+        statement.setBigDecimal(6, job.price);
+        statement.setString(7, job.description);
+        statement.setString(8, job.requirements);
     }
 
     private Job map(ResultSet resultSet) throws SQLException {
@@ -133,9 +143,11 @@ public class JobRepository {
         job.location = resultSet.getString("location");
         job.jobType = resultSet.getString("job_type");
         job.salary = resultSet.getString("salary");
+        job.price = resultSet.getBigDecimal("price");
         job.description = resultSet.getString("description");
         job.requirements = resultSet.getString("requirements");
         job.status = resultSet.getString("status");
+        job.filled = resultSet.getBoolean("filled");
         job.createdAt = String.valueOf(resultSet.getTimestamp("created_at"));
         return job;
     }

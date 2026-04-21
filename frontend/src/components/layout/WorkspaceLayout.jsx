@@ -127,7 +127,7 @@ export default function WorkspaceLayout() {
       <div className="min-w-0">
         <header className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#dfe4e0] bg-white px-8">
           <div>
-            <p className="text-sm font-bold text-[#17211e]">{routeTitles[location.pathname] || 'Workspace'}</p>
+            <p className="text-sm font-bold text-[#17211e]">{pageTitle(location.pathname)}</p>
             <p className="mt-0.5 text-xs text-[#7a8580]">{user.companyName || user.email}</p>
           </div>
           <Link className="flex items-center gap-3" to="/account">
@@ -152,4 +152,9 @@ function formatRole(role) {
     .split('_')
     .map((word) => word[0].toUpperCase() + word.slice(1))
     .join(' ');
+}
+
+function pageTitle(pathname) {
+  if (pathname.startsWith('/employer/candidates/')) return 'Candidate profile';
+  return routeTitles[pathname] || 'Workspace';
 }

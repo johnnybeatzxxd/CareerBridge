@@ -9,6 +9,7 @@ public class Application {
     public String seekerName;
     public String seekerEmail;
     public String jobTitle;
+    public BigDecimal jobPrice;
     public String companyName;
     public String coverLetter;
     public String status;

@@ -22,7 +22,14 @@ public class JobServlet extends HttpServlet {
             String path = Api.path(request);
             if (path.matches("/\\d+")) {
                 long id = Long.parseLong(path.substring(1));
-                jobs.findById(id).ifPresentOrElse(job -> write(response, job), () -> notFound(response));
+                jobs.findById(id).ifPresentOrElse(job -> {
+                    boolean owner = Api.hasRole(request, "EMPLOYER") && job.employerId == Api.userId(request);
+                    if (owner || ("OPEN".equals(job.status) && !job.filled)) {
+                        write(response, job);
+                    } else {
+                        notFound(response);
+                    }
+                }, () -> notFound(response));
                 return;
             }
             Api.json(response, HttpServletResponse.SC_OK, jobs.search(
@@ -43,7 +50,13 @@ public class JobServlet extends HttpServlet {
             return;
         }
         try {
-            Job job = jobs.create(Api.userId(request), Api.read(request, Job.class));
+            Job body = Api.read(request, Job.class);
+            if (body.price == null || body.price.signum() <= 0) {
+                Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Job price must be greater than zero");
+                return;
+            }
+            body.salary = null;
+            Job job = jobs.create(Api.userId(request), body);
             Api.json(response, HttpServletResponse.SC_CREATED, job);
         } catch (SQLException exception) {
             Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Unable to create job");
@@ -58,7 +71,13 @@ public class JobServlet extends HttpServlet {
         }
         try {
             long id = Long.parseLong(Api.path(request).substring(1));
-            jobs.update(id, Api.userId(request), Api.read(request, Job.class));
+            Job body = Api.read(request, Job.class);
+            if (body.price == null || body.price.signum() <= 0) {
+                Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Job price must be greater than zero");
+                return;
+            }
+            body.salary = null;
+            jobs.update(id, Api.userId(request), body);
             Api.json(response, HttpServletResponse.SC_OK, Map.of("updated", true));
         } catch (Exception exception) {
             Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Unable to update job");

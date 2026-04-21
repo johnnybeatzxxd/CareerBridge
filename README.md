@@ -24,6 +24,7 @@ docs/        Assignment notes
 - Employer registration, login, account management, dashboard, job posting, job management, application review
 - Admin dashboard, user management, employer approval, CV template preparation
 - Candidate hiring, simulated employer payments, seeker wallet balances, and withdrawals
+- Employer candidate profiles with built resume viewing and uploaded resume downloads
 
 ## Local Development
 

@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { Badge, Button, DataTable, DataTableBody, DataTableCell, DataTableHead, DataTableHeader, DataTableRow, EmptyState, IconButton, PageHeader, Skeleton } from '../../components/ui/index.js';
 import { useAuth } from '../auth/index.js';
+import { formatJobPrice } from '../jobs/jobUtils.js';
 import DeleteJobDialog from './DeleteJobDialog.jsx';
 import JobFormDialog from './JobFormDialog.jsx';
 import { formatJobType } from './jobForm.js';
@@ -55,11 +56,11 @@ export default function EmployerJobsPage() {
       <DataTable className="min-w-[1000px]" containerClassName="rounded-none border-[#d8dfda]">
         <DataTableHeader><DataTableRow><DataTableHead>Position</DataTableHead><DataTableHead>Location / Type</DataTableHead><DataTableHead>Applications</DataTableHead><DataTableHead>Status</DataTableHead><DataTableHead align="right">Actions</DataTableHead></DataTableRow></DataTableHeader>
         <DataTableBody>{jobs.map(job=><DataTableRow interactive key={job.id}>
-          <DataTableCell><p className="font-bold text-[#17211e]">{job.title}</p><p className="mt-1 text-xs text-[#74807a]">{job.salary || 'Salary not disclosed'}</p></DataTableCell>
+          <DataTableCell><p className="font-bold text-[#17211e]">{job.title}</p><p className="mt-1 text-xs text-[#74807a]">{formatJobPrice(job)}</p></DataTableCell>
           <DataTableCell><p className="font-semibold">{job.location}</p><p className="mt-1 text-xs">{formatJobType(job.jobType)}</p></DataTableCell>
           <DataTableCell><Link className="inline-flex items-center gap-2 font-bold text-[#176b52] hover:underline" to={`/employer/candidates?jobId=${job.id}`}><Users size={16}/>{applicationCount(job.id)} candidates</Link></DataTableCell>
-          <DataTableCell><Badge variant={job.status === 'OPEN' ? 'success' : 'neutral'} dot>{job.status === 'OPEN' ? 'Open' : 'Closed'}</Badge></DataTableCell>
-          <DataTableCell align="right"><div className="flex justify-end gap-1"><Link className="inline-grid h-10 w-10 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50" title="View public job" to={`/jobs/${job.id}`}><Eye size={16}/></Link><IconButton label={`Edit ${job.title}`} onClick={()=>openEdit(job)}><Pencil size={16}/></IconButton><IconButton label={`${job.status === 'OPEN' ? 'Close' : 'Reopen'} ${job.title}`} loading={busy} onClick={()=>toggle(job)}><Power size={16}/></IconButton><IconButton label={`Delete ${job.title}`} variant="danger" onClick={()=>setDeleting(job)}><Trash2 size={16}/></IconButton></div></DataTableCell>
+          <DataTableCell><Badge variant={job.filled ? 'success' : job.status === 'OPEN' ? 'success' : 'neutral'} dot>{job.filled ? 'Filled' : job.status === 'OPEN' ? 'Open' : 'Closed'}</Badge></DataTableCell>
+          <DataTableCell align="right"><div className="flex justify-end gap-1">{!job.filled && <Link className="inline-grid h-10 w-10 place-items-center rounded-md border border-slate-200 text-slate-600 hover:bg-slate-50" title="View public job" to={`/jobs/${job.id}`}><Eye size={16}/></Link>}{!job.filled && <IconButton label={`Edit ${job.title}`} onClick={()=>openEdit(job)}><Pencil size={16}/></IconButton>}{!job.filled && <IconButton label={`${job.status === 'OPEN' ? 'Close' : 'Reopen'} ${job.title}`} loading={busy} onClick={()=>toggle(job)}><Power size={16}/></IconButton>}<IconButton label={`Delete ${job.title}`} variant="danger" onClick={()=>setDeleting(job)}><Trash2 size={16}/></IconButton></div></DataTableCell>
         </DataTableRow>)}</DataTableBody>
       </DataTable>
     ) : <div className="border border-[#d8dfda] bg-white"><EmptyState title="No job posts yet" description="Create your first opportunity to begin receiving applications." action={<Button onClick={openCreate}><Plus size={16}/>Create job</Button>}/></div>}

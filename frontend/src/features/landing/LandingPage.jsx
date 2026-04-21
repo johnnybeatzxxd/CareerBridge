@@ -16,6 +16,7 @@ import {
   Sparkles,
   Users,
 } from 'lucide-react';
+import { formatJobPrice } from '../jobs/jobUtils.js';
 
 const roleTracks = [
   {
@@ -379,12 +380,10 @@ function JobCard({ job }) {
             <MapPin size={15} aria-hidden="true" />
             {job.location || 'Flexible location'}
           </span>
-          {job.salary && (
-            <span className="inline-flex items-center gap-1.5">
-              <CircleDollarSign size={15} aria-hidden="true" />
-              {job.salary}
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1.5">
+            <CircleDollarSign size={15} aria-hidden="true" />
+            {formatJobPrice(job)}
+          </span>
         </div>
       </div>
       <div className="mt-7 flex items-center justify-between border-t border-[#e4e8e5] pt-4">

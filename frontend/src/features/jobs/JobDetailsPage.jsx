@@ -17,7 +17,7 @@ import {
 } from '../../components/ui/index.js';
 import { useAuth } from '../auth/index.js';
 import ApplyDialog from './ApplyDialog.jsx';
-import { companyName, formatDate, formatJobType, initials } from './jobUtils.js';
+import { companyName, formatDate, formatJobPrice, formatJobType, initials } from './jobUtils.js';
 import { useJob } from './useJobs.js';
 
 export default function JobDetailsPage() {
@@ -102,7 +102,7 @@ export default function JobDetailsPage() {
           <aside>
             <div className="sticky top-24 border border-[#d8dfda] bg-white p-6">
               <p className="text-xs font-bold uppercase text-[#74807a]">Compensation</p>
-              <p className="mt-2 text-xl font-bold text-[#17211e]">{job.salary || 'Not disclosed'}</p>
+              <p className="mt-2 text-xl font-bold text-[#17211e]">{formatJobPrice(job)}</p>
               <Badge className="mt-4 rounded-none bg-[#e7f3ed] text-[#12664f]">{formatJobType(job.jobType)}</Badge>
 
               <div className="mt-6 border-t border-[#e5e9e6] pt-6">
