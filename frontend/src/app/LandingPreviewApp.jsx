@@ -9,6 +9,7 @@ import ProtectedRoute from './ProtectedRoute.jsx';
 import WorkspaceLayout from '../components/layout/WorkspaceLayout.jsx';
 import { DashboardPage } from '../features/dashboard/index.js';
 import { ApplicationsPage, CandidatesPage } from '../features/applications/index.js';
+import { ResumePage } from '../features/resume/index.js';
 import { apiRequest } from '../api.js';
 
 export default function LandingPreviewApp() {
@@ -56,7 +57,7 @@ export default function LandingPreviewApp() {
         <Route element={<WorkspaceLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="applications" element={<ApplicationsPage />} />
-          <Route path="resume" element={<PreviewPlaceholder title="Resume workspace" embedded />} />
+          <Route path="resume" element={<ResumePage />} />
           <Route path="alerts" element={<PreviewPlaceholder title="Job alerts workspace" embedded />} />
           <Route path="employer/jobs" element={<PreviewPlaceholder title="Employer jobs workspace" embedded />} />
           <Route path="employer/candidates" element={<CandidatesPage />} />
