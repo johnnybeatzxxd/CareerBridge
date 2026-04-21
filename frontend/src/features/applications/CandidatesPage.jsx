@@ -1,6 +1,6 @@
 import { Eye, Search, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useSearchParams } from 'react-router-dom';
 import {
   Avatar,
   Badge,
@@ -32,8 +32,10 @@ export default function CandidatesPage() {
   const { user } = useAuth();
   const { applications, loading, error, updateStatus } = useApplications();
   const [selected, setSelected] = useState(null);
+  const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
+  const jobFilter = searchParams.get('jobId') || '';
   const [updatingId, setUpdatingId] = useState(null);
   const [updateError, setUpdateError] = useState('');
 
@@ -45,9 +47,10 @@ export default function CandidatesPage() {
         || application.seekerEmail.toLowerCase().includes(normalized)
         || application.jobTitle.toLowerCase().includes(normalized);
       const matchesStatus = !statusFilter || application.status === statusFilter;
-      return matchesQuery && matchesStatus;
+      const matchesJob = !jobFilter || String(application.jobId) === jobFilter;
+      return matchesQuery && matchesStatus && matchesJob;
     });
-  }, [applications, query, statusFilter]);
+  }, [applications, query, statusFilter, jobFilter]);
 
   if (user.role !== 'EMPLOYER') return <Navigate to="/dashboard" replace />;
 
@@ -88,6 +91,13 @@ export default function CandidatesPage() {
           />
         </FormField>
       </section>
+
+      {jobFilter && (
+        <div className="flex items-center justify-between border border-[#b9d8cb] bg-[#edf7f2] px-4 py-3 text-sm text-[#12664f]">
+          <span>Showing candidates for one selected job post.</span>
+          <button className="font-bold hover:underline" onClick={() => setSearchParams({})}>Show all candidates</button>
+        </div>
+      )}
 
       {(error || updateError) && (
         <div className="border border-red-200 bg-red-50 p-4 text-sm text-red-700">{error || updateError}</div>

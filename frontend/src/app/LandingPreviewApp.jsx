@@ -11,6 +11,7 @@ import { DashboardPage } from '../features/dashboard/index.js';
 import { ApplicationsPage, CandidatesPage } from '../features/applications/index.js';
 import { ResumePage } from '../features/resume/index.js';
 import { AlertsPage } from '../features/alerts/index.js';
+import { EmployerJobsPage } from '../features/employer/index.js';
 import { apiRequest } from '../api.js';
 
 export default function LandingPreviewApp() {
@@ -60,7 +61,7 @@ export default function LandingPreviewApp() {
           <Route path="applications" element={<ApplicationsPage />} />
           <Route path="resume" element={<ResumePage />} />
           <Route path="alerts" element={<AlertsPage />} />
-          <Route path="employer/jobs" element={<PreviewPlaceholder title="Employer jobs workspace" embedded />} />
+          <Route path="employer/jobs" element={<EmployerJobsPage />} />
           <Route path="employer/candidates" element={<CandidatesPage />} />
           <Route path="admin" element={<PreviewPlaceholder title="Administration workspace" embedded />} />
           <Route path="account" element={<PreviewPlaceholder title="Account settings" embedded />} />
