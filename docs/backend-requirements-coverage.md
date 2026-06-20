@@ -4,7 +4,8 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 
 ## Job Seeker
 
-- Login/register/logout: `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`
+- Login/register/logout: `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/login`, `POST /api/auth/logout`
+- Resend signup verification code: `POST /api/auth/resend-otp`
 - Manage account CRUD: `POST /api/auth/register`, `GET /api/account`, `PUT /api/account`, `DELETE /api/account`
 - View dashboard: `GET /api/dashboard`
 - Submit application: `POST /api/applications`
@@ -23,7 +24,8 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 
 ## Employer
 
-- Login/register/logout: `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`
+- Login/register/logout: `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/login`, `POST /api/auth/logout`
+- Resend signup verification code: `POST /api/auth/resend-otp`
 - Manage account CRUD: `POST /api/auth/register`, `GET /api/account`, `PUT /api/account`, `DELETE /api/account`
 - Post a job: `POST /api/jobs`
 - Add and manage structured skill tags on a job: `POST /api/jobs`, `PUT /api/jobs/{id}`

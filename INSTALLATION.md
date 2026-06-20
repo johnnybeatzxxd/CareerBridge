@@ -70,6 +70,43 @@ mvn -version
 
 ## 3. Run the Backend
 
+### Configure Gmail email verification
+
+New accounts must verify a six-digit code sent by email. Use a Gmail App Password, not your normal
+Google account password.
+
+1. Enable 2-Step Verification on the Google account.
+2. Open Google Account App Passwords: `https://myaccount.google.com/apppasswords`
+3. Create an app password named `CareerBridge`.
+4. Store the generated 16-character password in an environment variable without spaces. Do not add it to Git.
+
+Linux/macOS:
+
+```bash
+export SMTP_USERNAME="your-gmail-address@gmail.com"
+export SMTP_APP_PASSWORD="your-16-character-app-password"
+export OTP_SECRET="$(openssl rand -hex 32)"
+```
+
+Windows PowerShell, for the current terminal:
+
+```powershell
+$env:SMTP_USERNAME="your-gmail-address@gmail.com"
+$env:SMTP_APP_PASSWORD="your-16-character-app-password"
+$env:OTP_SECRET="replace-with-a-long-random-secret"
+```
+
+The default SMTP settings use Gmail:
+
+```text
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_AUTH=true
+SMTP_STARTTLS=true
+```
+
+These defaults can be overridden with environment variables when another SMTP server is used.
+
 From the project root:
 
 ```bash

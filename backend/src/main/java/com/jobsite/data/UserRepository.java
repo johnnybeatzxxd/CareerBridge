@@ -14,6 +14,10 @@ import java.util.List;
 
 public class UserRepository {
     public User create(String name, String email, String password, String role, String companyName, String companyEmail) throws SQLException {
+        return createWithHash(name, email, Passwords.hash(password), role, companyName, companyEmail);
+    }
+
+    public User createWithHash(String name, String email, String passwordHash, String role, String companyName, String companyEmail) throws SQLException {
         String sql = """
                 insert into users (name, email, password_hash, role, company_name, company_email, approved)
                 values (?, ?, ?, ?, ?, ?, ?)
@@ -22,7 +26,7 @@ public class UserRepository {
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.setString(2, email.toLowerCase());
-            statement.setString(3, Passwords.hash(password));
+            statement.setString(3, passwordHash);
             statement.setString(4, role);
             statement.setString(5, companyName);
             statement.setString(6, companyEmail);
@@ -31,6 +35,17 @@ public class UserRepository {
             try (ResultSet keys = statement.getGeneratedKeys()) {
                 keys.next();
                 return findById(keys.getLong(1)).orElseThrow();
+            }
+        }
+    }
+
+    public boolean emailExists(String email) throws SQLException {
+        try (Connection connection = Database.connection();
+             PreparedStatement statement = connection.prepareStatement("select count(*) from users where email = ?")) {
+            statement.setString(1, email.toLowerCase());
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                return resultSet.getInt(1) > 0;
             }
         }
     }

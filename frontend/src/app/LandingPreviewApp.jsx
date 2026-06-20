@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import LandingPage from '../features/landing/LandingPage.jsx';
-import { LoginPage, RegisterPage } from '../features/auth/index.js';
+import { LoginPage, RegisterPage, VerifyEmailPage } from '../features/auth/index.js';
 import { JobDetailsPage, JobsPage } from '../features/jobs/index.js';
 import PublicHeader from '../components/layout/PublicHeader.jsx';
 import PreviewPlaceholder from '../components/layout/PreviewPlaceholder.jsx';
@@ -57,6 +57,7 @@ export default function LandingPreviewApp() {
       </Route>
       <Route path="login" element={<LoginPage />} />
       <Route path="register" element={<RegisterPage />} />
+      <Route path="verify-email" element={<VerifyEmailPage />} />
       <Route element={<ProtectedRoute />}>
         <Route element={<WorkspaceLayout />}>
           <Route path="dashboard" element={<DashboardPage />} />

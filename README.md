@@ -25,6 +25,7 @@ docs/        Assignment notes
 - Admin dashboard, user management, employer approval, CV template preparation
 - Candidate hiring, simulated employer payments, seeker wallet balances, and withdrawals
 - Employer candidate profiles with built resume viewing and uploaded resume downloads
+- Gmail SMTP email verification with expiring signup OTP codes
 
 ## Local Development
 

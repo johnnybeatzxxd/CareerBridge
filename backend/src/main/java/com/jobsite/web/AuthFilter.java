@@ -19,6 +19,8 @@ public class AuthFilter implements Filter {
             "/api/public/landing",
             "/api/auth/login",
             "/api/auth/register",
+            "/api/auth/verify-email",
+            "/api/auth/resend-otp",
             "/api/auth/logout"
     );
 

@@ -41,8 +41,8 @@ export default function RegisterPage() {
 
     setSubmitting(true);
     try {
-      await register(form);
-      navigate('/dashboard', { replace: true });
+      const result = await register(form);
+      navigate('/verify-email', { replace: true, state: { email: result.email } });
     } catch (error) {
       setServerError(error.message || 'Unable to create account');
     } finally {
@@ -137,7 +137,7 @@ export default function RegisterPage() {
         </FormField>
 
         <Button className="w-full" size="lg" type="submit" loading={submitting} loadingText="Creating account...">
-          Create account
+          Continue to verification
         </Button>
       </form>
 

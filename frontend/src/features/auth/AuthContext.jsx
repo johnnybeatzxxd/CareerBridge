@@ -22,7 +22,15 @@ export function AuthProvider({ children }) {
   }
 
   async function register(details) {
-    return persist(await jsonRequest('/auth/register', 'POST', details));
+    return jsonRequest('/auth/register', 'POST', details);
+  }
+
+  async function verifyEmail(details) {
+    return persist(await jsonRequest('/auth/verify-email', 'POST', details));
+  }
+
+  async function resendOtp(email) {
+    return jsonRequest('/auth/resend-otp', 'POST', { email });
   }
 
   async function logout() {
@@ -47,6 +55,8 @@ export function AuthProvider({ children }) {
       token: session?.token || null,
       login,
       register,
+      verifyEmail,
+      resendOtp,
       logout,
       updateUser,
     }),

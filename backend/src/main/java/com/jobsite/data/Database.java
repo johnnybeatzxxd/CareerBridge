@@ -46,6 +46,22 @@ public final class Database {
                     """);
 
             statement.execute("""
+                    create table if not exists pending_registrations (
+                        email varchar(180) primary key,
+                        name varchar(120) not null,
+                        password_hash varchar(255) not null,
+                        role varchar(30) not null,
+                        company_name varchar(160),
+                        company_email varchar(180),
+                        otp_hash varchar(64) not null,
+                        expires_at timestamp not null,
+                        resend_available_at timestamp not null,
+                        attempts integer not null default 0,
+                        created_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
                     merge into users key(email) values (
                         1,
                         'System Administrator',
