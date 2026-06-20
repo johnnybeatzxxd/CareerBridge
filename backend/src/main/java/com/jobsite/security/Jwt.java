@@ -18,7 +18,7 @@ public final class Jwt {
     private static final Gson GSON = new Gson();
     private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
     private static final String SECRET = Env.getOrDefault("JWT_SECRET", "change-this-secret-for-production");
-    private static final long TTL_SECONDS = 60L * 60L * 24L;
+    private static final long TTL_SECONDS = Long.parseLong(Env.getOrDefault("ACCESS_TOKEN_TTL_SECONDS", "900"));
 
     private Jwt() {
     }

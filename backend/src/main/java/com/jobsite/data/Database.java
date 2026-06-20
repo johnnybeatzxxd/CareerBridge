@@ -63,6 +63,15 @@ public final class Database {
                     """);
 
             statement.execute("""
+                    create table if not exists refresh_sessions (
+                        token_hash varchar(64) primary key,
+                        user_id bigint not null references users(id) on delete cascade,
+                        expires_at timestamp not null,
+                        created_at timestamp not null default current_timestamp
+                    )
+                    """);
+
+            statement.execute("""
                     merge into users key(email) values (
                         1,
                         'System Administrator',

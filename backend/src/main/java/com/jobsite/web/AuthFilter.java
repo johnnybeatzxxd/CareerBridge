@@ -21,6 +21,7 @@ public class AuthFilter implements Filter {
             "/api/auth/register",
             "/api/auth/verify-email",
             "/api/auth/resend-otp",
+            "/api/auth/refresh",
             "/api/auth/logout"
     );
 

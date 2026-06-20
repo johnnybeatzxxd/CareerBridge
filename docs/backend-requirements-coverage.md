@@ -6,6 +6,7 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 
 - Login/register/logout: `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/login`, `POST /api/auth/logout`
 - Resend signup verification code: `POST /api/auth/resend-otp`
+- Refresh an expired access token: `POST /api/auth/refresh`
 - Manage account CRUD: `POST /api/auth/register`, `GET /api/account`, `PUT /api/account`, `DELETE /api/account`
 - View dashboard: `GET /api/dashboard`
 - Submit application: `POST /api/applications`
@@ -26,6 +27,7 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 
 - Login/register/logout: `POST /api/auth/register`, `POST /api/auth/verify-email`, `POST /api/auth/login`, `POST /api/auth/logout`
 - Resend signup verification code: `POST /api/auth/resend-otp`
+- Refresh an expired access token: `POST /api/auth/refresh`
 - Manage account CRUD: `POST /api/auth/register`, `GET /api/account`, `PUT /api/account`, `DELETE /api/account`
 - Post a job: `POST /api/jobs`
 - Add and manage structured skill tags on a job: `POST /api/jobs`, `PUT /api/jobs/{id}`
@@ -58,3 +60,9 @@ financial workflow:
 - Wallet balances are calculated from immutable payment and withdrawal records.
 - Withdrawals require a payout method and destination and cannot exceed the available balance.
 - This is a local demonstration ledger. It does not connect to a real bank or payment processor.
+
+## Session Management
+
+- Access tokens are short-lived and automatically renewed through a rotating HttpOnly refresh cookie.
+- Refresh sessions are stored as token hashes and are revoked on logout.
+- If refresh is unavailable or expired, the frontend clears local authentication state and redirects to login.

@@ -86,6 +86,9 @@ SMTP_USERNAME=your-gmail-address@gmail.com
 SMTP_APP_PASSWORD=your-16-character-app-password
 JWT_SECRET=replace-with-a-long-random-secret
 OTP_SECRET=replace-with-another-long-random-secret
+ACCESS_TOKEN_TTL_SECONDS=900
+REFRESH_TOKEN_TTL_SECONDS=2592000
+COOKIE_SECURE=false
 ```
 
 `backend/.env` is ignored by Git, so credentials remain local. A safe template is available at
@@ -102,6 +105,9 @@ SMTP_STARTTLS=true
 
 The backend loads `backend/.env` automatically. Operating-system environment variables still take
 priority when the same setting is provided in both places.
+
+Keep `COOKIE_SECURE=false` for local HTTP development. Set it to `true` when the backend is served
+over HTTPS.
 
 From the project root:
 

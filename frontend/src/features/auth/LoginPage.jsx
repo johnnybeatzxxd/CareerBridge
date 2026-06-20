@@ -1,6 +1,6 @@
 import { Mail } from 'lucide-react';
 import { useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import { Button, FormField, Input } from '../../components/ui/index.js';
 import AuthLayout from './AuthLayout.jsx';
 import PasswordInput from './PasswordInput.jsx';
@@ -10,6 +10,7 @@ export default function LoginPage() {
   const { login, user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [form, setForm] = useState({ email: '', password: '' });
   const [errors, setErrors] = useState({});
   const [submitting, setSubmitting] = useState(false);
@@ -27,7 +28,8 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       await login(form);
-      navigate(location.state?.from || '/dashboard', { replace: true });
+      const requestedPath = searchParams.get('from');
+      navigate(location.state?.from || (requestedPath?.startsWith('/') ? requestedPath : '/dashboard'), { replace: true });
     } catch (error) {
       setServerError(error.message || 'Unable to sign in');
     } finally {

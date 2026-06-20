@@ -27,6 +27,7 @@ docs/        Assignment notes
 - Employer candidate profiles with built resume viewing and uploaded resume downloads
 - Gmail SMTP email verification with expiring signup OTP codes
 - Automatic local configuration from the ignored `backend/.env` file
+- Automatic access-token refresh with rotating HttpOnly sessions
 
 ## Local Development
 
