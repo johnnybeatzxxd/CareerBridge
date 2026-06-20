@@ -28,6 +28,7 @@ docs/        Assignment notes
 - Gmail SMTP email verification with expiring signup OTP codes
 - Automatic local configuration from the ignored `backend/.env` file
 - Automatic access-token refresh with rotating HttpOnly sessions
+- Live sidebar notification badges for matching job alerts
 
 ## Local Development
 

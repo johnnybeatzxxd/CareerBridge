@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { apiRequest, jsonRequest } from '../../api.js';
+import { notifyAlertsChanged } from './alertEvents.js';
 
 export function useAlerts() {
   const [alerts, setAlerts] = useState([]);
@@ -25,17 +26,20 @@ export function useAlerts() {
   async function create(alert) {
     const created = await jsonRequest('/job-alerts', 'POST', alert);
     setAlerts((current) => [created, ...current]);
+    notifyAlertsChanged();
     return created;
   }
 
   async function update(alert) {
     await jsonRequest(`/job-alerts/${alert.id}`, 'PUT', alert);
     await load();
+    notifyAlertsChanged();
   }
 
   async function remove(alertId) {
     await apiRequest(`/job-alerts/${alertId}`, { method: 'DELETE' });
     setAlerts((current) => current.filter((alert) => alert.id !== alertId));
+    notifyAlertsChanged();
   }
 
   return { alerts, loading, error, create, update, remove, reload: load };

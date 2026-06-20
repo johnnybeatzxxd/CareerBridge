@@ -19,6 +19,7 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - Filter job search: `GET /api/jobs?location=...&jobType=...&skill=...`
 - View landing page data: `GET /api/public/landing`
 - Get job alert: `GET /api/job-alerts`, `POST /api/job-alerts`, `PUT /api/job-alerts/{id}`, `DELETE /api/job-alerts/{id}`
+- View live matching-job count from the workspace navigation
 - View applied jobs: `GET /api/applications`
 - View wallet balance and transactions: `GET /api/wallet`
 - Withdraw available funds: `POST /api/wallet/withdrawals`

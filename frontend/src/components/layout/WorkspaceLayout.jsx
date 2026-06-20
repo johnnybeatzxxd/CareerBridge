@@ -10,9 +10,11 @@ import {
   Users,
   WalletCards,
 } from 'lucide-react';
+import { useEffect } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Avatar } from '../ui/index.js';
 import { useAuth } from '../../features/auth/index.js';
+import { useAlertNotification } from '../../features/alerts/useAlertNotification.js';
 
 const roleNavigation = {
   JOB_SEEKER: [
@@ -51,6 +53,11 @@ export default function WorkspaceLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const navigation = roleNavigation[user.role] || [];
+  const { matchCount, refresh: refreshAlerts } = useAlertNotification(user.role === 'JOB_SEEKER');
+
+  useEffect(() => {
+    if (user.role === 'JOB_SEEKER') refreshAlerts();
+  }, [location.pathname, refreshAlerts, user.role]);
 
   async function signOut() {
     await logout();
@@ -84,8 +91,22 @@ export default function WorkspaceLayout() {
                 }
                 to={to}
               >
-                <Icon size={18} />
-                {label}
+                <span className="relative grid h-5 w-5 shrink-0 place-items-center">
+                  <Icon size={18} />
+                  {to === '/alerts' && matchCount > 0 && (
+                    <span
+                      aria-label={`${matchCount} matching job ${matchCount === 1 ? 'alert' : 'alerts'}`}
+                      className="absolute -right-1 -top-1 h-2.5 w-2.5 rounded-full border-2 border-white bg-red-600"
+                      title={`${matchCount} matching ${matchCount === 1 ? 'job' : 'jobs'}`}
+                    />
+                  )}
+                </span>
+                <span className="min-w-0 flex-1">{label}</span>
+                {to === '/alerts' && matchCount > 0 && (
+                  <span className="inline-flex min-w-6 justify-center rounded-full bg-red-600 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                    {matchCount > 99 ? '99+' : matchCount}
+                  </span>
+                )}
               </NavLink>
             ))}
           </div>
