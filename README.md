@@ -26,6 +26,7 @@ docs/        Assignment notes
 - Candidate hiring, simulated employer payments, seeker wallet balances, and withdrawals
 - Employer candidate profiles with built resume viewing and uploaded resume downloads
 - Gmail SMTP email verification with expiring signup OTP codes
+- Automatic local configuration from the ignored `backend/.env` file
 
 ## Local Development
 

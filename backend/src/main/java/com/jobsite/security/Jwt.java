@@ -2,6 +2,7 @@ package com.jobsite.security;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jobsite.config.Env;
 import com.jobsite.model.User;
 
 import javax.crypto.Mac;
@@ -16,7 +17,7 @@ import java.util.Map;
 public final class Jwt {
     private static final Gson GSON = new Gson();
     private static final Type MAP_TYPE = new TypeToken<Map<String, Object>>() {}.getType();
-    private static final String SECRET = System.getenv().getOrDefault("JWT_SECRET", "change-this-secret-for-production");
+    private static final String SECRET = Env.getOrDefault("JWT_SECRET", "change-this-secret-for-production");
     private static final long TTL_SECONDS = 60L * 60L * 24L;
 
     private Jwt() {

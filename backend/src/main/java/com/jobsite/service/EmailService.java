@@ -1,5 +1,6 @@
 package com.jobsite.service;
 
+import com.jobsite.config.Env;
 import jakarta.mail.Authenticator;
 import jakarta.mail.Message;
 import jakarta.mail.PasswordAuthentication;
@@ -12,12 +13,12 @@ import java.util.Properties;
 
 public class EmailService {
     public void sendVerificationCode(String recipient, String name, String code) {
-        String username = required("SMTP_USERNAME");
-        String password = required("SMTP_APP_PASSWORD");
-        String host = System.getenv().getOrDefault("SMTP_HOST", "smtp.gmail.com");
-        String port = System.getenv().getOrDefault("SMTP_PORT", "587");
-        boolean auth = Boolean.parseBoolean(System.getenv().getOrDefault("SMTP_AUTH", "true"));
-        boolean startTls = Boolean.parseBoolean(System.getenv().getOrDefault("SMTP_STARTTLS", "true"));
+        String username = Env.require("SMTP_USERNAME");
+        String password = Env.require("SMTP_APP_PASSWORD");
+        String host = Env.getOrDefault("SMTP_HOST", "smtp.gmail.com");
+        String port = Env.getOrDefault("SMTP_PORT", "587");
+        boolean auth = Boolean.parseBoolean(Env.getOrDefault("SMTP_AUTH", "true"));
+        boolean startTls = Boolean.parseBoolean(Env.getOrDefault("SMTP_STARTTLS", "true"));
 
         Properties properties = new Properties();
         properties.put("mail.smtp.host", host);
@@ -56,13 +57,5 @@ public class EmailService {
         } catch (Exception exception) {
             throw new IllegalStateException("Unable to send verification email", exception);
         }
-    }
-
-    private String required(String name) {
-        String value = System.getenv(name);
-        if (value == null || value.isBlank()) {
-            throw new IllegalStateException(name + " is not configured");
-        }
-        return value;
     }
 }

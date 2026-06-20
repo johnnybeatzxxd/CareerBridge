@@ -78,23 +78,18 @@ Google account password.
 1. Enable 2-Step Verification on the Google account.
 2. Open Google Account App Passwords: `https://myaccount.google.com/apppasswords`
 3. Create an app password named `CareerBridge`.
-4. Store the generated 16-character password in an environment variable without spaces. Do not add it to Git.
+4. Open `backend/.env` and replace the placeholder values. The generated Gmail App Password must
+   be entered without spaces.
 
-Linux/macOS:
-
-```bash
-export SMTP_USERNAME="your-gmail-address@gmail.com"
-export SMTP_APP_PASSWORD="your-16-character-app-password"
-export OTP_SECRET="$(openssl rand -hex 32)"
+```dotenv
+SMTP_USERNAME=your-gmail-address@gmail.com
+SMTP_APP_PASSWORD=your-16-character-app-password
+JWT_SECRET=replace-with-a-long-random-secret
+OTP_SECRET=replace-with-another-long-random-secret
 ```
 
-Windows PowerShell, for the current terminal:
-
-```powershell
-$env:SMTP_USERNAME="your-gmail-address@gmail.com"
-$env:SMTP_APP_PASSWORD="your-16-character-app-password"
-$env:OTP_SECRET="replace-with-a-long-random-secret"
-```
+`backend/.env` is ignored by Git, so credentials remain local. A safe template is available at
+`backend/.env.example`.
 
 The default SMTP settings use Gmail:
 
@@ -105,7 +100,8 @@ SMTP_AUTH=true
 SMTP_STARTTLS=true
 ```
 
-These defaults can be overridden with environment variables when another SMTP server is used.
+The backend loads `backend/.env` automatically. Operating-system environment variables still take
+priority when the same setting is provided in both places.
 
 From the project root:
 

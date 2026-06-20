@@ -1,5 +1,7 @@
 package com.jobsite.security;
 
+import com.jobsite.config.Env;
+
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -7,7 +9,7 @@ import java.util.HexFormat;
 
 public final class Otp {
     private static final SecureRandom RANDOM = new SecureRandom();
-    private static final String SECRET = System.getenv().getOrDefault("OTP_SECRET", "change-this-otp-secret");
+    private static final String SECRET = Env.getOrDefault("OTP_SECRET", "change-this-otp-secret");
 
     private Otp() {
     }

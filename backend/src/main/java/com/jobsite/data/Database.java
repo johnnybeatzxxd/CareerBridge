@@ -1,5 +1,6 @@
 package com.jobsite.data;
 
+import com.jobsite.config.Env;
 import com.jobsite.security.Passwords;
 
 import java.sql.Connection;
@@ -14,12 +15,12 @@ import java.util.regex.Pattern;
 
 public final class Database {
     private static final Pattern PRICE_PATTERN = Pattern.compile("(\\d[\\d,]*(?:\\.\\d{1,2})?)");
-    private static final String URL = System.getenv().getOrDefault(
+    private static final String URL = Env.getOrDefault(
             "DB_URL",
             "jdbc:h2:file:./data/jobsite;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;AUTO_SERVER=TRUE"
     );
-    private static final String USER = System.getenv().getOrDefault("DB_USER", "sa");
-    private static final String PASSWORD = System.getenv().getOrDefault("DB_PASSWORD", "");
+    private static final String USER = Env.getOrDefault("DB_USER", "sa");
+    private static final String PASSWORD = Env.getOrDefault("DB_PASSWORD", "");
 
     private Database() {
     }
