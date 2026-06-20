@@ -38,6 +38,13 @@ export default function JobCard({ job }) {
             </div>
 
             <p className="mt-5 line-clamp-2 max-w-4xl text-sm leading-6 text-[#5f6c66]">{job.description}</p>
+            {job.skills?.length > 0 && (
+              <div className="mt-4 flex flex-wrap gap-2">
+                {job.skills.slice(0, 6).map((skill) => (
+                  <span className="bg-[#f0f4f2] px-2.5 py-1 text-xs font-semibold text-[#53615b]" key={skill}>{skill}</span>
+                ))}
+              </div>
+            )}
 
             <div className="mt-5 flex items-center justify-between border-t border-[#e5e9e6] pt-4">
               <div className="flex items-center gap-2">

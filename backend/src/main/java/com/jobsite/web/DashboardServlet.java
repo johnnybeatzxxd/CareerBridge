@@ -29,7 +29,7 @@ public class DashboardServlet extends HttpServlet {
                 ));
             } else if (Api.hasRole(request, "EMPLOYER")) {
                 Api.json(response, HttpServletResponse.SC_OK, Map.of(
-                        "jobs", jobs.search(null, null, null, Api.userId(request)).size(),
+                        "jobs", jobs.search(null, null, null, null, Api.userId(request)).size(),
                         "applications", applications.countForEmployer(Api.userId(request))
                 ));
             } else {

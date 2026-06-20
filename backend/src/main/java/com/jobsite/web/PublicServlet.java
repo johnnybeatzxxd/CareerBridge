@@ -23,7 +23,7 @@ public class PublicServlet extends HttpServlet {
         try {
             Api.json(response, HttpServletResponse.SC_OK, Map.of(
                     "stats", system.stats(),
-                    "featuredJobs", jobs.search(null, null, null, null).stream().limit(6).toList()
+                    "featuredJobs", jobs.search(null, null, null, null, null).stream().limit(6).toList()
             ));
         } catch (SQLException exception) {
             Api.error(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Unable to load landing data");

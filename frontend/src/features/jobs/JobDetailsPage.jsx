@@ -81,6 +81,18 @@ export default function JobDetailsPage() {
 
             <div className="space-y-10 p-8">
               <JobSection title="About the role" content={job.description} />
+              {job.skills?.length > 0 && (
+                <section>
+                  <h2 className="text-lg font-bold text-[#17211e]">Required skills</h2>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {job.skills.map((skill) => (
+                      <Link className="border border-[#cdd7d1] bg-[#f1f6f3] px-3 py-1.5 text-xs font-bold text-[#176b52] hover:border-[#176b52]" key={skill} to={`/jobs?skill=${encodeURIComponent(skill)}`}>
+                        {skill}
+                      </Link>
+                    ))}
+                  </div>
+                </section>
+              )}
               <JobSection title="What you will need" content={job.requirements || 'The employer has not listed specific requirements.'} />
               <section>
                 <h2 className="text-lg font-bold text-[#17211e]">About the employer</h2>

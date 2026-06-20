@@ -36,6 +36,7 @@ public class JobServlet extends HttpServlet {
                     request.getParameter("q"),
                     request.getParameter("location"),
                     request.getParameter("jobType"),
+                    request.getParameter("skill"),
                     employerId
             ));
         } catch (SQLException exception) {

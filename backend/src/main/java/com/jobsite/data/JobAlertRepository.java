@@ -21,7 +21,7 @@ public class JobAlertRepository {
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     JobAlert alert = map(resultSet);
-                    alert.matchingJobs = jobs.search(alert.keyword, alert.location, alert.jobType, null);
+                    alert.matchingJobs = jobs.search(alert.keyword, alert.location, alert.jobType, null, null);
                     alerts.add(alert);
                 }
             }

@@ -13,8 +13,8 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - Build CV CRUD: `GET /api/cv`, `PUT /api/cv`, `DELETE /api/cv`
 - Download CV: `GET /api/cv/download`
 - View jobs: `GET /api/jobs`
-- Search jobs: `GET /api/jobs?q=...`
-- Filter job search: `GET /api/jobs?location=...&jobType=...`
+- Search jobs by title, description, or skill: `GET /api/jobs?q=...`
+- Filter job search: `GET /api/jobs?location=...&jobType=...&skill=...`
 - View landing page data: `GET /api/public/landing`
 - Get job alert: `GET /api/job-alerts`, `POST /api/job-alerts`, `PUT /api/job-alerts/{id}`, `DELETE /api/job-alerts/{id}`
 - View applied jobs: `GET /api/applications`
@@ -26,6 +26,7 @@ This file maps the assignment requirements to the Java Servlet backend endpoints
 - Login/register/logout: `POST /api/auth/register`, `POST /api/auth/login`, `POST /api/auth/logout`
 - Manage account CRUD: `POST /api/auth/register`, `GET /api/account`, `PUT /api/account`, `DELETE /api/account`
 - Post a job: `POST /api/jobs`
+- Add and manage structured skill tags on a job: `POST /api/jobs`, `PUT /api/jobs/{id}`
 - Manage job: `GET /api/jobs?scope=EMPLOYER`, `PUT /api/jobs/{id}`, `DELETE /api/jobs/{id}`
 - View dashboard: `GET /api/dashboard`
 - View applications: `GET /api/applications`

@@ -2,6 +2,7 @@ import { BriefcaseBusiness } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button, Dialog, FormField, Input, Select, Textarea } from '../../components/ui/index.js';
 import { emptyJobForm, jobStatusOptions, jobTypeOptions } from './jobForm.js';
+import SkillTagInput from './SkillTagInput.jsx';
 
 export default function JobFormDialog({ job, open, saving, onClose, onSave }) {
   const [form, setForm] = useState(emptyJobForm);
@@ -19,6 +20,7 @@ export default function JobFormDialog({ job, open, saving, onClose, onSave }) {
     if (!form.title.trim()) nextErrors.title = 'Job title is required';
     if (!form.location.trim()) nextErrors.location = 'Location is required';
     if (!Number.isFinite(Number(form.price)) || Number(form.price) <= 0) nextErrors.price = 'Enter a job price greater than zero';
+    if (!form.skills?.length) nextErrors.skills = 'Add at least one required skill';
     if (!form.description.trim()) nextErrors.description = 'Description is required';
     setErrors(nextErrors);
     if (!Object.keys(nextErrors).length) onSave(form);
@@ -47,6 +49,9 @@ export default function JobFormDialog({ job, open, saving, onClose, onSave }) {
           <Input min="0.01" step="0.01" type="number" value={form.price || ''} placeholder="5000.00" onChange={(e) => setForm({ ...form, price: e.target.value })} />
         </FormField>
         {job?.id && <FormField label="Status"><Select options={jobStatusOptions} value={form.status} onChange={(e) => setForm({ ...form, status: e.target.value })} /></FormField>}
+        <FormField className="sm:col-span-2" label="Required skills" required error={errors.skills} description="Use focused tags that candidates can search and filter by.">
+          <SkillTagInput skills={form.skills || []} onChange={(skills) => setForm({ ...form, skills })} />
+        </FormField>
         <FormField className="sm:col-span-2" label="Description" required error={errors.description}>
           <Textarea className="min-h-40" value={form.description} placeholder="Describe the role, responsibilities, and impact." onChange={(e) => setForm({ ...form, description: e.target.value })} />
         </FormField>

@@ -20,6 +20,7 @@ export default function JobsPage() {
       q: searchParams.get('q') || '',
       location: searchParams.get('location') || '',
       jobType: searchParams.get('jobType') || '',
+      skill: searchParams.get('skill') || '',
     }),
     [searchParams],
   );
@@ -38,7 +39,7 @@ export default function JobsPage() {
   }
 
   function clearFilters() {
-    setForm({ q: '', location: '', jobType: '' });
+    setForm({ q: '', location: '', jobType: '', skill: '' });
     setSearchParams({});
   }
 
@@ -83,6 +84,13 @@ export default function JobsPage() {
                   options={jobTypeOptions}
                   value={form.jobType}
                   onChange={(event) => setForm({ ...form, jobType: event.target.value })}
+                />
+              </FormField>
+              <FormField label="Required skill">
+                <Input
+                  value={form.skill}
+                  placeholder="Exact skill, e.g. Java"
+                  onChange={(event) => setForm({ ...form, skill: event.target.value })}
                 />
               </FormField>
               <Button className="w-full" type="submit">Apply filters</Button>

@@ -56,7 +56,7 @@ export default function EmployerJobsPage() {
       <DataTable className="min-w-[1000px]" containerClassName="rounded-none border-[#d8dfda]">
         <DataTableHeader><DataTableRow><DataTableHead>Position</DataTableHead><DataTableHead>Location / Type</DataTableHead><DataTableHead>Applications</DataTableHead><DataTableHead>Status</DataTableHead><DataTableHead align="right">Actions</DataTableHead></DataTableRow></DataTableHeader>
         <DataTableBody>{jobs.map(job=><DataTableRow interactive key={job.id}>
-          <DataTableCell><p className="font-bold text-[#17211e]">{job.title}</p><p className="mt-1 text-xs text-[#74807a]">{formatJobPrice(job)}</p></DataTableCell>
+          <DataTableCell><p className="font-bold text-[#17211e]">{job.title}</p><p className="mt-1 text-xs text-[#74807a]">{formatJobPrice(job)}</p>{job.skills?.length > 0 && <p className="mt-2 max-w-sm truncate text-xs text-[#176b52]">{job.skills.join(' · ')}</p>}</DataTableCell>
           <DataTableCell><p className="font-semibold">{job.location}</p><p className="mt-1 text-xs">{formatJobType(job.jobType)}</p></DataTableCell>
           <DataTableCell><Link className="inline-flex items-center gap-2 font-bold text-[#176b52] hover:underline" to={`/employer/candidates?jobId=${job.id}`}><Users size={16}/>{applicationCount(job.id)} candidates</Link></DataTableCell>
           <DataTableCell><Badge variant={job.filled ? 'success' : job.status === 'OPEN' ? 'success' : 'neutral'} dot>{job.filled ? 'Filled' : job.status === 'OPEN' ? 'Open' : 'Closed'}</Badge></DataTableCell>

@@ -14,13 +14,14 @@ export function useJobs(filters) {
       if (filters.q) params.set('q', filters.q);
       if (filters.location) params.set('location', filters.location);
       if (filters.jobType) params.set('jobType', filters.jobType);
+      if (filters.skill) params.set('skill', filters.skill);
       setJobs(await apiRequest(`/jobs${params.size ? `?${params.toString()}` : ''}`));
     } catch (requestError) {
       setError(requestError.message || 'Unable to load jobs');
     } finally {
       setLoading(false);
     }
-  }, [filters.q, filters.location, filters.jobType]);
+  }, [filters.q, filters.location, filters.jobType, filters.skill]);
 
   useEffect(() => {
     load();
