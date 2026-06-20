@@ -14,6 +14,7 @@ import { AlertsPage } from '../features/alerts/index.js';
 import { EmployerJobsPage } from '../features/employer/index.js';
 import { WalletPage } from '../features/wallet/index.js';
 import { apiRequest } from '../api.js';
+import { AccountPage } from '../features/account/index.js';
 
 export default function LandingPreviewApp() {
   const [landing, setLanding] = useState({ stats: {}, featuredJobs: [] });
@@ -67,7 +68,7 @@ export default function LandingPreviewApp() {
           <Route path="employer/candidates" element={<CandidatesPage />} />
           <Route path="employer/candidates/:applicationId" element={<CandidateProfilePage />} />
           <Route path="admin" element={<PreviewPlaceholder title="Administration workspace" embedded />} />
-          <Route path="account" element={<PreviewPlaceholder title="Account settings" embedded />} />
+          <Route path="account" element={<AccountPage />} />
         </Route>
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />

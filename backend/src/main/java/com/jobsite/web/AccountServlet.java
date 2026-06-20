@@ -26,7 +26,25 @@ public class AccountServlet extends HttpServlet {
     protected void doPut(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
             User body = Api.read(request, User.class);
-            User user = users.update(Api.userId(request), body.name, body.email, null, body.companyName, body.companyEmail, null, null);
+            User current = users.findById(Api.userId(request)).orElseThrow();
+            if (blank(body.name) || blank(body.email)) {
+                Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Name and email are required");
+                return;
+            }
+            if ("EMPLOYER".equals(current.role) && (blank(body.companyName) || blank(body.companyEmail))) {
+                Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Company name and company email are required");
+                return;
+            }
+            User user = users.update(
+                    Api.userId(request),
+                    body.name.trim(),
+                    body.email.trim(),
+                    null,
+                    body.companyName == null ? null : body.companyName.trim(),
+                    body.companyEmail == null ? null : body.companyEmail.trim(),
+                    null,
+                    null
+            );
             Api.json(response, HttpServletResponse.SC_OK, user);
         } catch (SQLException exception) {
             Api.error(response, HttpServletResponse.SC_BAD_REQUEST, "Unable to update account");
@@ -57,5 +75,9 @@ public class AccountServlet extends HttpServlet {
         } catch (IOException exception) {
             throw new RuntimeException(exception);
         }
+    }
+
+    private boolean blank(String value) {
+        return value == null || value.isBlank();
     }
 }

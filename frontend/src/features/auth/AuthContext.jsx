@@ -35,6 +35,11 @@ export function AuthProvider({ children }) {
     }
   }
 
+  function updateUser(user) {
+    if (!session) return;
+    persist({ ...session, user });
+  }
+
   const value = useMemo(
     () => ({
       session,
@@ -43,6 +48,7 @@ export function AuthProvider({ children }) {
       login,
       register,
       logout,
+      updateUser,
     }),
     [session],
   );
